@@ -13,7 +13,11 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="E:/Program File/Java/lib/jxl.jar"/>
 	<classpathentry kind="lib" path="E:/github/TripSystem/mysql-connector-java-5.1.13-bin.jar"/>
+=======
+	<classpathentry kind="lib" path="D:/school(imp)/校园生活/学习，考试/Database/pj/TripSystem/jxl.jar"/>
+>>>>>>> 98eef5eeff6905493bd9603f19fa4f2c37d026e9
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
