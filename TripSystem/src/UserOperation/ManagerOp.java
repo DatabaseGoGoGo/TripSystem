@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import bean.Application;
+import bean.User;
 import Config.Config;
 import dao.DBHelper;
 
@@ -46,7 +47,7 @@ public class ManagerOp {
     		while (result.next()){
     			int applicationID = result.getInt("applicationID");
     			int projectID = result.getInt("projectID");
-    			int applyerID = result.getInt("applyerID");
+    			String applyerID = result.getString("applyerID");
     			int state = result.getInt("state");
 
     			applicationRequests.add(new Application(applicationID, applyerID, projectID, state));
@@ -62,7 +63,7 @@ public class ManagerOp {
     		Application a = (Application)it.next();
     		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
     		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID(), "projectName", "project");
+    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
     		a.setProjectName(projectName);
     	}
     	
@@ -84,7 +85,7 @@ public class ManagerOp {
 			while (result.next()){
 				int applicationID = result.getInt("applicationID");
 				int projectID = result.getInt("projectID");
-				int applyerID = result.getInt("applyerID");
+				String applyerID = result.getString("applyerID");
 				int state = result.getInt("state");
 	
 				applicationRequests.add(new Application(applicationID, applyerID, projectID, state));
@@ -121,7 +122,7 @@ public class ManagerOp {
 			while (result.next()){
 				int applicationID = result.getInt("applicationID");
 				int projectID = result.getInt("projectID");
-				int applyerID = result.getInt("applyerID");
+				String applyerID = result.getString("applyerID");
 	
 				applicationRequests.add(new Application(applicationID, applyerID, projectID, state));				
 			}
@@ -136,7 +137,7 @@ public class ManagerOp {
     		Application a = (Application)it.next();
     		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
     		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID(), "projectName", "project");
+    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
     		a.setProjectName(projectName);
     	}
 		
@@ -172,7 +173,7 @@ public class ManagerOp {
 	// ==============================================
 	// check application
 	// ==============================================
-	public void setApplicationState(int applicationID, int state, String reason){
+	public void setApplicationState(int applicationID, int state){
 		String sql = "update application "
 					+ "set state = " + state + " "
 					+ "where applicationID == " + applicationID;
@@ -183,24 +184,53 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		if (state == REFUSED){
-			giveRefusedReason(reason);
-		}
 	}
 	
-	private void giveRefusedReason(String reason){
-		String sql = "insert into rejectionlog(applicationID, rejectReason, )";
+	public void giveRefusedReason(int applicationID, String reason){
+		String sql = "insert into rejectionlog(applicationID, rejectReason) "
+					+ "values("+ applicationID + ", " + reason + ")";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
 			dbHelper.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
+	public List<User> getAllDeveloperByProjectID(String applicationID){
+		int projectID = generalOp.getProjectIDByApplicationID(applicationID);
+		if (projectID == -1){
+			System.out.println("getProjectIDByApplicationID failed");
+			return null;
+		}
+		
+		List<User> developers = new LinkedList<User>();
+		String sql = "select userID, userName from user "
+					+ "where userID in ("
+					+ "select userID from develop "
+					+ "where projectID == " + projectID + ")";
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			String userID = result.getString("userID");
+    			String userName = result.getString("userName");
+
+    			developers.add(new User(userID, userName));
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return developers;
+	}
+	
+	public void assignDevelopers(int[] developers){
+		
+	}
 	// ==============================================
 	// check application
 	// ==============================================
