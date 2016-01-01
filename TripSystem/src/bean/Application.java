@@ -35,6 +35,10 @@ public class Application {
 		return projectID;
 	}
 	
+	public int getState(){
+		return state;
+	}
+	
 	public String getStateName(){
 		String stateName = "";
 		switch (state){
