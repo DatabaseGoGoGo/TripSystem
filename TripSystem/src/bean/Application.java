@@ -12,10 +12,10 @@ public class Application {
 	private String projectName;
 	private String applyerName;
 	
-	public Application(int applicationID, int projectID, int state){
+	public Application(int applicationID, int applyerID, int projectID, int state){
 		this.applicationID = applicationID;
 		this.projectID = projectID;
-		this.applyerID = applicationID;
+		this.applyerID = applyerID;
 		this.state = state;
 	}
 	
@@ -25,6 +25,35 @@ public class Application {
 	
 	public void setProjectName(String name){
 		this.projectName = name;
+	}
+	
+	public int getApplyerID(){
+		return applyerID;
+	}
+	
+	public int getProjectID(){
+		return projectID;
+	}
+	
+	public String getStateName(){
+		String stateName = "";
+		switch (state){
+			case 0:
+				stateName = "批准";
+				break;
+			case 1:
+				stateName = "拒绝";
+				break;
+			case 2:
+				stateName = "待审";
+				break;
+			case 3:
+				stateName = "取消";
+				break;
+			default:
+				break;
+		}
+		return stateName;
 	}
 
 }
