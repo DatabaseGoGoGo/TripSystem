@@ -7,12 +7,12 @@ public class Application {
 	private final int CANCELED = 3;
 	private int applicationID;
 	private int projectID;
-	private int applyerID;
+	private String applyerID;
 	private int state;
 	private String projectName;
 	private String applyerName;
 	
-	public Application(int applicationID, int applyerID, int projectID, int state){
+	public Application(int applicationID, String applyerID, int projectID, int state){
 		this.applicationID = applicationID;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
@@ -27,7 +27,7 @@ public class Application {
 		this.projectName = name;
 	}
 	
-	public int getApplyerID(){
+	public String getApplyerID(){
 		return applyerID;
 	}
 	

@@ -2,8 +2,10 @@ package UserOperation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import bean.Application;
+import bean.User;
 import dao.DBHelper;
 
 public class GeneralOp {
@@ -13,7 +15,7 @@ public class GeneralOp {
 		this.url = url;
 	}
 	
-	public String getNameByID(int id, String name, String table){
+	public String getNameByID(String id, String name, String table){
 		String nameByID = "";
 		
 		String sql = "select " + name + " from " + table + " "
@@ -32,4 +34,25 @@ public class GeneralOp {
 		}
 		return nameByID;
 	}
+	
+	public int getProjectIDByApplicationID(String applicationID){
+		int projectID = -1;
+		String sql = "select projectID from application "
+					+ "where applicationID == " + applicationID;		
+		ResultSet result;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			result = dbHelper.getPst().executeQuery();
+			while (result.next()){
+				projectID = result.getInt("projectID");			
+			}
+			result.close();
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return projectID;
+	}
+	
+
 }
