@@ -48,7 +48,7 @@ create table application
    applicationID        decimal not null,
    projectID            decimal not null,
    userID               char(20) not null,
-   state                char(10) not null,
+   state                decimal not null,
    primary key (applicationID)
 );
 
