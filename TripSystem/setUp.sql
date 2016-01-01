@@ -112,7 +112,7 @@ create table rejectionLog
    rejectionID          decimal not null,
    applicationID        decimal not null,
    rejectReason         char(200),
-   rejectTime           datetime,
+   rejectTimes          int not null,
    primary key (rejectionID)
 );
 
