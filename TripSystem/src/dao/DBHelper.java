@@ -11,7 +11,7 @@ public class DBHelper {
 	
 	//your username and password
 	private String dbUsername = "root"; 
-	private String dbPassword = "mm941216";
+	private String dbPassword = "950720SophiaYj";
 	
 	private Connection connection = null;
 	private PreparedStatement pstatement= null;

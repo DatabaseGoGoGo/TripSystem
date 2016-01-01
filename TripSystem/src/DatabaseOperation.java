@@ -19,7 +19,7 @@ import dao.MySqlDao;
  * Created by Jun Yuan on 2015/12/31.
  */
 public class DatabaseOperation {
-  public static void main(String[] argv) {
+  public static void main(String[] argv) {  
       operateXlsFile();
   }
 
@@ -28,7 +28,7 @@ public class DatabaseOperation {
 
     Workbook workbook = null;
     try {
-      workbook = Workbook.getWorkbook(new File("ExcelData/01初始用户数据.xlsx"));
+      workbook = Workbook.getWorkbook(new File("ExcelData/01初始用户数据.xls"));
     } catch (IOException e) {
       e.printStackTrace();
     } catch (BiffException e) {
@@ -55,7 +55,7 @@ public class DatabaseOperation {
 
     List<Project> projects = new ArrayList<>();
     try {
-      workbook = Workbook.getWorkbook(new File("ExcelData/02初始项目数据.xlsx"));
+      workbook = Workbook.getWorkbook(new File("ExcelData/02初始项目数据.xls"));
     } catch (IOException e) {
       e.printStackTrace();
     } catch (BiffException e) {
@@ -64,6 +64,9 @@ public class DatabaseOperation {
     sheet = workbook.getSheet(0);
     for (int row = 1; row < sheet.getRows(); row++) {
       Cell cell = sheet.getCell(0, row);
+      if (cell.getContents().equals("")) {
+    	break;
+      }
       int projectID = Integer.parseInt(cell.getContents());
 
       cell = sheet.getCell(1, row);
@@ -86,7 +89,7 @@ public class DatabaseOperation {
     }
 
   }
-
+  
   public static List<String> readSqlFile(String filename) {
     StringBuffer temp = new StringBuffer();
     List<String> sqlList = new ArrayList<>();

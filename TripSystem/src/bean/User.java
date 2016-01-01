@@ -21,20 +21,26 @@ public class User {
 		this.userID = userID;
 		this.userName = userName;
 		this.password = password;
-		switch (roleString) {
-		case "管理员":
+		if (roleString.contains("管理员")) {
 			role = 0;
-			break;
-		case "总经理":
-			role = 1;
-			break;
-		case "销售":
-			role = 2;
-			break;
-		case "开发":
-			role = 3;
-			break;
+		} else {
+			if (roleString.contains("产品经理")) {
+				role = 1;
+			} else {
+				if (roleString.contains("销售")) {
+					role = 2;
+				} else {
+					role = 3;
+				}
+			}
 		}
+	}
+	
+	public User(String userID, String userName, String password, int role) {
+		this.userID = userID;
+		this.userName = userName;
+		this.password = password;
+		this.role = role;
 	}
 
 	public String getUserID() {
