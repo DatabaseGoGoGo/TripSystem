@@ -13,7 +13,11 @@ import Config.Config;
 import dao.DBHelper;
 
 public class ManagerOp {
+	private final int APPROVED = 0;
+	private final int REFUSED = 1;
 	private final int WAITING = 2;
+	private final int CANCELED = 3;
+	
 	private int managerID;
 	private String url;
 	GeneralOp generalOp;
@@ -25,6 +29,9 @@ public class ManagerOp {
 		generalOp = new GeneralOp(url);
 	}
 	
+	// ==============================================
+	// get application
+	// ==============================================
 	public List<Application> getAllApplication(){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application "
@@ -136,7 +143,7 @@ public class ManagerOp {
     	List<Application> allApplication = sortRequest(applicationRequests);
 		return allApplication;
 	}
-
+	
 	/**
 	 * @description: move the "wait" application to the front
 	 */
@@ -157,6 +164,50 @@ public class ManagerOp {
 		}
 		return newAppList;
 	}
+	// ==============================================
+	// get application
+	// ==============================================
+
+	
+	// ==============================================
+	// check application
+	// ==============================================
+	public void setApplicationState(int applicationID, int state, String reason){
+		String sql = "update application "
+					+ "set state = " + state + " "
+					+ "where applicationID == " + applicationID;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if (state == REFUSED){
+			giveRefusedReason(reason);
+		}
+	}
+	
+	private void giveRefusedReason(String reason){
+		String sql = "insert into rejectionlog(applicationID, rejectReason, )";
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	// ==============================================
+	// check application
+	// ==============================================
+	
+	
+	
+	
 	
 	public static void main(String[] a){
 		List<String> l = new LinkedList<String>();
