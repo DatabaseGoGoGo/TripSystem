@@ -61,16 +61,16 @@ public class MySqlDao {
         String query2 = "";
         switch (user.getRole()) {
         case 0:
-        	query2 = String.format("insert admin(userID) valuse('%s');", user.getUserID());
+        	query2 = String.format("insert admin(userID) values('%s');", user.getUserID());
         	break;
         case 1:
-        	query2 = String.format("insert manager(userID) valuse('%s');", user.getUserID());
+        	query2 = String.format("insert manager(userID) values('%s');", user.getUserID());
         	break;
         case 2:
-        	query2 = String.format("insert salesman(userID) valuse('%s');", user.getUserID());
+        	query2 = String.format("insert salesman(userID) values('%s');", user.getUserID());
         	break;
         case 3:
-        	query2 = String.format("insert developer(userID) valuse('%s');", user.getUserID());
+        	query2 = String.format("insert developer(userID) values('%s');", user.getUserID());
         	break;
         }
         statement.addBatch(query1);
@@ -98,8 +98,10 @@ public class MySqlDao {
       statement = connection.createStatement();
       for (Project project : projects) {
         String query = String.format(
-            "insert project(projectID, userID, projectName, projectDescription) values(%d, '%s', '%s', '%s')", 
-            project.getProjectID(), project.getManagerID(), project.getProjectName(), project.getProjectDescription());
+            "insert project(projectID, userID, projectName, projectDescription) values(%d, (%s), '%s', '%s')", 
+            project.getProjectID(), 
+            "select userID from manager where userID='" + project.getManagerID() +"'",
+            project.getProjectName(), project.getProjectDescription());
         statement.addBatch(query);
       }
       statement.executeBatch();
