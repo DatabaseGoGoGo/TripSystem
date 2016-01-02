@@ -12,6 +12,7 @@ public class Application {
 	private String applicationName;
 	private String applyerName;
 	
+
 	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
 		this.applicationID = applicationID;
 		this.projectID = projectID;
@@ -24,6 +25,7 @@ public class Application {
 		this.applyerName = name;
 	}
 	
+
 	public String getApplicationName(){
 		return applicationName;
 	}

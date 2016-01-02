@@ -16,6 +16,7 @@
 	    <link href="css/font-awesome.min.css" rel="stylesheet">
 	    <link href="css/bootstrap.min.css" rel="stylesheet">
 	    <link href="css/templatemo-style.css" rel="stylesheet">
+    	<script type="text/javascript" src="js/login.js" defer="defer" charset="utf-8"></script>
 	    
 	    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,17 +31,17 @@
 	          <div class="square"></div>
 	          <h1>Trip System</h1>
 	        </header>
-	        <form method="post" action="login" class="templatemo-login-form">
+	        <form method="get" action="login" id="login_box" class="templatemo-login-form">
 	        	<div class="form-group">
 	        		<div class="input-group">
 		        		<div class="input-group-addon"><i class="fa fa-user fa-fw"></i></div>	        		
-		              	<input type="text" class="form-control" name="username" placeholder="userID">           
+		              	<input type="text" id="username" class="form-control" name="username" placeholder="userID">           
 		          	</div>	
 	        	</div>
 	        	<div class="form-group">
 	        		<div class="input-group">
 		        		<div class="input-group-addon"><i class="fa fa-key fa-fw"></i></div>	        		
-		              	<input type="password" class="form-control" name="password" placeholder="******">           
+		              	<input type="password" id="password" class="form-control" name="password" placeholder="******">           
 		          	</div>	
 	        	</div>	          	
 	          	<div class="form-group">
@@ -49,17 +50,20 @@
 						<label for="c1"><span></span>Remember me</label>
 				    </div>				    
 				</div>
+				<div class="hide" style="display:none;">
+					<% 
+					if(request.getSession()!=null && (String)request.getSession().getAttribute("error") != null){
+					%>	
+						<textarea id="error_info">error</textarea>
+					<% }%>					
+				</div>
+				<div class="failure" id="summary">	
+					
+				</div>
 				<div class="form-group">
 					<button type="button" id="login-button" class="templatemo-blue-button width-100">Login</button>
 				</div>
 	        </form>
-	        <div class="hide">
-				<% 
-					if(request.getSession()!=null && (String)request.getSession().getAttribute("error") != null){
-				%>
-					<textarea id="error_info">error1</textarea>
-				<% }%>
-			</div>
 		</div>
 		<div class="templatemo-content-widget templatemo-login-widget templatemo-register-widget white-bg">
 			<p>Not a registered user yet? <strong><a href="#" class="blue-text">Sign up now!</a></strong></p>

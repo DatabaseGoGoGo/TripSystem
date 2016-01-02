@@ -50,8 +50,6 @@ create table application
    userID               char(20) not null,
    applicationName          char(20) not null,
    state                decimal not null,
-   applyTime            datetime,   
-   rejectTimes          int not null,
    primary key (applicationID)
 );
 
@@ -114,6 +112,7 @@ create table rejectionLog
    rejectionID          integer not null auto_increment,
    applicationID        decimal not null,
    rejectReason         char(200),
+   rejectTimes          int not null,
    primary key (rejectionID)
 );
 

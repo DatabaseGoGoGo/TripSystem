@@ -117,7 +117,7 @@ public class ManagerOp {
 				+ "where state = " + state + " and "
 				+ "projectID in ("
 				+ "select projectID from project "
-				+ "where userID = " + managerID + ") "
+				+ "where userID = '" + managerID + "') "
 				+ "order by applyTime DESC";
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	

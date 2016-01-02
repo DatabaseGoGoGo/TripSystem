@@ -43,6 +43,7 @@ public class User {
 		this.role = role;
 	}
 
+
 	public User(String userID, String userName){
 		this.userID = userID;
 		this.userName = userName;
@@ -51,7 +52,7 @@ public class User {
 	public User(String userID){
 		this.userID = userID;
 	}
-	
+
 	public String getUserID() {
 		return userID;
 	}
