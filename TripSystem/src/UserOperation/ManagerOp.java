@@ -191,6 +191,22 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		if (state == REFUSED){
+			updateRejectTimes(applicationID);
+		}
+	}
+	
+	private void updateRejectTimes(int applicationID){
+		String sql = "update application "
+				+ "set rejectTimes = rejectTimes + 1 "
+				+ "where applicationID = " + applicationID;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void giveRefusedReason(int applicationID, String reason){
