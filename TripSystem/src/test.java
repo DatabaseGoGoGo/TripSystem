@@ -1,3 +1,5 @@
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -9,9 +11,11 @@ import UserOperation.SalesmanOp;
 
 public class test {
 	public static void main(String[] argv) {
-		SalesmanOp salesman = new SalesmanOp("2015110012");
-		List<Application> applications = generateAppliations(5);
+		SalesmanOp salesman = new SalesmanOp("2015110005");
+		List<Application> applications = generateAppliations(2);
 		List<Trip> trips = generateTrip(applications);
+		salesman.createApplication(applications.get(0), trips.get(0));
+		salesman.createApplication(applications.get(1), trips.get(1));
 	}
 	
 	static Random random = new Random();
@@ -21,8 +25,8 @@ public class test {
 		for (int i = 0; i < size; i++) {
 			int applicationID = (int) System.currentTimeMillis();
 			String applicationName = "applyYooo" + random.nextInt(100);
-			String applyerID = "2015110012";
-			int projectID = 2015130001;
+			String applyerID = "2015110005";
+			int projectID = 2015120001;
 			int state = Application.WAITING;
 			Application application = new Application(applicationID, applicationName, applyerID, projectID, state);
 			appList.add(application);
@@ -35,6 +39,7 @@ public class test {
 		for (Application app : appList) {
 			int tripID = app.getApplicationID() * 10 + random.nextInt(9);
 			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
+			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+1000000));
 			trips.add(trip);
 		}
 		return trips;

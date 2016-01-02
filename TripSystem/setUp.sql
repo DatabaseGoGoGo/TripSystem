@@ -52,7 +52,7 @@ create table application
    userID               char(20) not null,
    applicationName          char(20) not null,
    state                decimal not null,
-   applyTime            datetime,   
+   applyTime            timestamp,   
    rejectTimes          int not null,
    primary key (applicationID)
 );
@@ -145,7 +145,7 @@ create table trip
 (
    tripID               decimal not null,
    applicationID        decimal not null,
-   departTime           date not null,
+   departTime           timestamp not null,
    days                 decimal not null,
    description          char(200) not null,
    state                decimal not null,
@@ -217,7 +217,7 @@ alter table sell add constraint FK_sell foreign key (projectID)
       references project (projectID) on delete restrict on update restrict;
 
 alter table sell add constraint FK_sell2 foreign key (userID)
-      references developer (userID) on delete restrict on update restrict;
+      references salesman (userID) on delete restrict on update restrict;
 
 alter table trip add constraint FK_generate1 foreign key (applicationID)
       references application (applicationID) on delete restrict on update restrict;

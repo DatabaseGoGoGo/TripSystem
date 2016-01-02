@@ -129,14 +129,13 @@ public class SalesmanOp {
 	}
 	
 	public void createApplication(Application application, Trip trip) {
-		String sql = "insert into application(applicationID, projectID, userID, "
-				+ "applicationName, state, applyTime, rejectTimes) "
-				+ "values(" + application.getApplicationID() + ", "
-				+ application.getProjectID() + ", "
-				+ salesmanID + ", "
-				+ application.getApplicationName() + ", "
-				+ application.getState() + ", "
-				+ application.getApplyTime() + ", "
+		String sql = "insert into application(applicationID, projectID, userID, \n"
+				+ "applicationName, state, rejectTimes) \n"
+				+ "values(" + application.getApplicationID() + ", \n"
+				+ application.getProjectID() + ", \n"
+				+ "'" + salesmanID + "', \n"
+				+ "'" + application.getApplicationName() + "', \n"
+				+ application.getState() + ", \n"
 				+ application.getRejectTimes() + ");";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -150,11 +149,11 @@ public class SalesmanOp {
 	}
 	
 	private void createTrip(Trip trip) {
-		String sql = "insert into trip(tripID, applicationID, departTime, days, "
-				+ "description, state) values("
-				+ trip.getTripID() + ", " + trip.getApplicationID() + ", "
-				+ trip.getDepartTime() + ", " + trip.getDays() + ", "
-				+ trip.getDescription() + ", " + trip.getState() + ");";
+		String sql = "insert into trip(tripID, applicationID, departTime, days, \n"
+				+ "description, state) values(\n"
+				+ trip.getTripID() + ", " + trip.getApplicationID() + ", \n"
+				+ "'" + trip.getDepartTime() + "', " + trip.getDays() + ", \n"
+				+ "'" + trip.getDescription() + "', " + trip.getState() + ");\n";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			

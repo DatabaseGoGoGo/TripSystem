@@ -1,6 +1,7 @@
 package bean;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Application {
 	public static final int APPROVED = 0;
@@ -13,7 +14,7 @@ public class Application {
 	private int state;
 	private String applicationName;
 	private String applyerName;
-	private Time applyTime;
+	private Timestamp applyTime;
 	private int rejectTimes;
 	
 	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
@@ -25,11 +26,11 @@ public class Application {
 		this.applicationName = applicationName;
 	}
 	
-	public Time getApplyTime() {
+	public Timestamp getApplyTime() {
 		return applyTime;
 	}
 
-	public void setApplyTime(Time applyTime) {
+	public void setApplyTime(Timestamp applyTime) {
 		this.applyTime = applyTime;
 	}
 

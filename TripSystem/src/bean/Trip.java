@@ -1,15 +1,16 @@
 package bean;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Trip {
 	private int tripID;
 	private int applicationID;
-	private Date departTime;
+	private Timestamp departTime;
 	private int days;
-	private String description = "";
+	private String description = "please write some description";
 	private int state;
 	private String tripName;
 
@@ -30,7 +31,15 @@ public class Trip {
 		this.tripName = name;
 	}
 	
-	public Trip(int tripID, int applicationID, Date departTime, int days, String description, int state) {
+	public void setDepartTime(Timestamp departTime) {
+		this.departTime = departTime;
+	}
+	
+	public void setDescription(String description) {
+		this.description = new String(description);
+	}
+	
+	public Trip(int tripID, int applicationID, Timestamp departTime, int days, String description, int state) {
 		this.tripID = tripID;
 		this.applicationID = applicationID;
 		this.departTime = departTime;
@@ -47,7 +56,7 @@ public class Trip {
 		return applicationID;
 	}
 
-	public Date getDepartTime() {
+	public Timestamp getDepartTime() {
 		return departTime;
 	}
 
