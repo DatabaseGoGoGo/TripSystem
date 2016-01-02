@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dao.DBHelper;
+import bean.Application;
 import bean.Assignment;
+import bean.Project;
 import Config.Config;
 
 public class DeveloperOp {
@@ -175,4 +177,35 @@ public class DeveloperOp {
     	
     	return recordNum;
 	}
+
+	// ==========================================
+	// check the pj responsible for
+	// ==========================================
+	public List<Project> getAllprojects(){
+		List<Project> projects = new LinkedList<Project>();
+		String sql = "select * from project "
+					+ "where projectID in ("
+					+ "select projectID from develop "
+					+ "where userID = " + developerID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			int projectID = result.getInt("projectID");
+    			String managerID = result.getString("userID");
+    			String projectName = result.getString("projectName");
+    			String projectDescription = result.getString("projectDescription");  
+
+    			projects.add(new Project(projectID, managerID, projectName, projectDescription));
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return projects;
+	}
+
 }
