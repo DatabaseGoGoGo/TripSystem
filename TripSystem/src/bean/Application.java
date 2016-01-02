@@ -9,26 +9,23 @@ public class Application {
 	private int projectID;
 	private String applyerID;
 	private int state;
-	private String projectName;
+	private String applicationName;
 	private String applyerName;
 	
-	public Application(int applicationID, String applyerID, int projectID, int state){
+	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
 		this.applicationID = applicationID;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
 		this.state = state;
+		this.applicationName = applicationName;
 	}
 	
 	public void setApplyerName(String name){
 		this.applyerName = name;
 	}
 	
-	public void setProjectName(String name){
-		this.projectName = name;
-	}
-	
-	public String getProjectName(){
-		return projectName;
+	public String getApplicationName(){
+		return applicationName;
 	}
 	
 	public String getApplyerID(){

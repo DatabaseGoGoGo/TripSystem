@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import bean.Application;
+import bean.Assignment;
+import bean.Trip;
 import bean.User;
 import Config.Config;
 import dao.DBHelper;
@@ -46,11 +48,12 @@ public class ManagerOp {
     		result = dbHelper.getPst().executeQuery();
     		while (result.next()){
     			int applicationID = result.getInt("applicationID");
+    			String applicationName = result.getString("applicationName");
     			int projectID = result.getInt("projectID");
-    			String applyerID = result.getString("applyerID");
+    			String applyerID = result.getString("userID");    			
     			int state = result.getInt("state");
     			System.out.println("projectID:" + projectID);
-    			applicationRequests.add(new Application(applicationID, applyerID, projectID, state));
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));
     		}
     		result.close();
     		dbHelper.close();
@@ -63,8 +66,6 @@ public class ManagerOp {
     		Application a = (Application)it.next();
     		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
     		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
-    		a.setProjectName(projectName);
     	}
     	
     	
@@ -84,11 +85,12 @@ public class ManagerOp {
 			result = dbHelper.getPst().executeQuery();
 			while (result.next()){
 				int applicationID = result.getInt("applicationID");
+				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
-				String applyerID = result.getString("applyerID");
+				String applyerID = result.getString("userID");
 				int state = result.getInt("state");
 	
-				applicationRequests.add(new Application(applicationID, applyerID, projectID, state));
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));
 			}
 			result.close();
 			dbHelper.close();
@@ -101,7 +103,6 @@ public class ManagerOp {
     		Application a = (Application)it.next();
     		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
     		a.setApplyerName(applyerName);
-    		a.setProjectName(name);
     	}
 		
 		return applicationRequests;
@@ -121,10 +122,11 @@ public class ManagerOp {
 			result = dbHelper.getPst().executeQuery();
 			while (result.next()){
 				int applicationID = result.getInt("applicationID");
+				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
-				String applyerID = result.getString("applyerID");
+				String applyerID = result.getString("userID");
 	
-				applicationRequests.add(new Application(applicationID, applyerID, projectID, state));				
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));				
 			}
 			result.close();
 			dbHelper.close();
@@ -137,8 +139,6 @@ public class ManagerOp {
     		Application a = (Application)it.next();
     		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
     		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
-    		a.setProjectName(projectName);
     	}
 		
     	List<Application> allApplication = sortRequest(applicationRequests);
@@ -228,7 +228,18 @@ public class ManagerOp {
     	return developers;
 	}
 	
-	public void assignDevelopers(int[] developers){
+	public void assignDevelopers(int applicationID, int[] developers){
+		for (int i = 0; i < developers.length; i++){
+			String sql = "insert into assign(applicationID, userID, state) "
+					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
+			DBHelper dbHelper = new DBHelper(url, sql);    	
+			try {
+				dbHelper.getPst().executeUpdate();			
+				dbHelper.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	// ==============================================
@@ -236,14 +247,97 @@ public class ManagerOp {
 	// ==============================================
 	
 	
+	// ==============================================
+	// view assignment state
+	// ==============================================
+	/**
+	 * @description check this assignment's developers' confirmed state
+	 * @param applicationID
+	 * @return
+	 */
+	public Assignment getAssignmentStateByID(int applicationID){
+		List<User> developersAssignedTo = new LinkedList<User>();
+		List<Integer> developerState = new LinkedList<Integer>();
+		String sql = "select * from assign "
+					+ "where applicationID = " + applicationID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			String developerID = result.getString("userID");
+    			int state = result.getInt("state");
+    			developersAssignedTo.add(new User(developerID));
+    			developerState.add(state);
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	// set userName
+    	Iterator<User> it = developersAssignedTo.iterator();
+    	while(it.hasNext()){
+    		User user = (User)it.next();
+    		String develpoerName = generalOp.getNameByID(user.getUserID(), "userName", "user");
+    		user.setUserName(develpoerName);
+    	}
+    	// init assignment
+    	Assignment assignment = new Assignment(applicationID);
+    	assignment.setDevelopersAssignedTo(developersAssignedTo);
+    	assignment.setDeveloperState(developerState);
+    	
+    	return assignment;
+	}
+	
+	public List<Trip> getAllTripState(){
+		List<Trip> trips = new LinkedList<Trip>();
+		String sql = "select applicationID, state from trip "
+					+ "where applicationID in (" 
+						+ "select application.applicationID from application "
+						+ "where state = " + APPROVED + " and "
+						+ "application.projectID in ("
+							+ "select projectID from project "
+							+ "where project.userID = " + managerID + ") "
+					+ ")";
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			int applicationID = result.getInt("applicationID");
+    			int state = result.getInt("state");
+    			trips.add(new Trip(applicationID, state));
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	Iterator<Trip> it = trips.iterator();
+    	while(it.hasNext()){
+    		Trip trip = (Trip)it.next();
+    		String tripName = generalOp.getNameByID(trip.getApplicationID()+"", "applicationName", "application");
+    		trip.setTripName(tripName);
+    	}
+    	
+    	return trips;
+	}
+	// ==============================================
+	// view assignment state
+	// ==============================================
+	
 	
 	
 	
 	public static void main(String[] a){
-		ManagerOp m = new ManagerOp("2015110009");
-		List<Application> l = m.getAllApplication();
-		for (int i = 0, len = l.size(); i < len; i++){
-			System.out.println(l.get(i).getProjectName());
-		}
+//		ManagerOp m = new ManagerOp("2015110009");
+//		List<Application> l = m.getApplicationByState(0);
+//		for (int i = 0, len = l.size(); i < len; i++){
+//			System.out.println(l.get(i).getProjectName());
+//		}
+		
+
 	}
 }
