@@ -6,16 +6,23 @@ import java.util.Random;
 
 import bean.Application;
 import bean.Trip;
+import UserOperation.GeneralOp;
+import UserOperation.ManagerOp;
 import UserOperation.SalesmanOp;
 
 
 public class test {
 	public static void main(String[] argv) {
-		SalesmanOp salesman = new SalesmanOp("2015110012");
-		List<Application> applications = generateAppliations(12);
-		List<Trip> trips = generateTrip(applications);
-		salesman.createApplication(applications.get(0), trips.get(0));
-		salesman.createApplication(applications.get(1), trips.get(1));
+//		SalesmanOp salesman = new SalesmanOp("2015110012");
+//		List<Application> applications = generateAppliations(12);
+//		List<Trip> trips = generateTrip(applications);
+//		salesman.createApplication(applications.get(0), trips.get(0));
+//		salesman.createApplication(applications.get(1), trips.get(1));
+		
+		ManagerOp managerOp = new ManagerOp("2015110009");
+		managerOp.assignDeveloperToProject(2015120010, "2015110006");
+		managerOp.assignDeveloperToProject(2015120010, "2015110007");
+		managerOp.assignDeveloperToProject(2015120010, "2015110008");
 	}
 	
 	static Random random = new Random();

@@ -203,8 +203,8 @@ public class ManagerOp {
 		}		
 	}
 	
-	public List<User> getAllDeveloperByApplicationID(String applicationID){
-		int projectID = generalOp.getProjectIDByApplicationID(applicationID);
+	public List<User> getAllDeveloperByApplicationID(int applicationID){
+		int projectID = generalOp.getProjectIDByApplicationID(applicationID+"");
 		if (projectID == -1){
 			System.out.println("getProjectIDByApplicationID failed");
 			return null;
@@ -233,7 +233,7 @@ public class ManagerOp {
     	return developers;
 	}
 	
-	public void assignDevelopers(int applicationID, int[] developers){
+	public void assignDevelopersToTrip(int applicationID, int[] developers){
 		for (int i = 0; i < developers.length; i++){
 			String sql = "insert into assign(applicationID, userID, state) "
 					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
@@ -394,6 +394,17 @@ public class ManagerOp {
 	// view finished trips' log
 	// ==============================================
 	
+	public void assignDeveloperToProject(int projectID, String userID){
+		String sql = "insert into develop(projectID, userID) "
+				+ "values("+ projectID + ", '" + userID + "')";
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
 	
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
@@ -414,12 +425,17 @@ public class ManagerOp {
 //		m.giveRefusedReason(51438896, "~~~~~~~~~~`");
 		
 		
-		// getApplicationByState(0)
-//		List<User> l = m.getAllDeveloperByApplicationID(applicationID);
+		// getAllDeveloperByApplicationID
+//		List<User> l = m.getAllDeveloperByApplicationID(51438896);
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getApplicationID());
+//			System.out.println(l.get(i).getUserID());
 //		}
 //		System.out.println(l.size());
+		// assignDevelopersToTrip(int, int[])
+		int[] developers = {2015110003, 2015110001, 2015110019};
+		m.assignDevelopersToTrip(51438896, developers);
+		
+
 		
 
 	}

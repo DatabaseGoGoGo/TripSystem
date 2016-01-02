@@ -35,6 +35,14 @@ public class Assignment {
 		}		
 	}
 	
+	public String getApplicationName(){
+		return applicationName;
+	}
+	
+	public int getApplicationID(){
+		return applicationID;
+	}
+	
 	public List<String> getDeveloperStateName(){
 		return developerStateName;
 	}

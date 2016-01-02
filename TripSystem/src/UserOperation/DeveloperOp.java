@@ -96,7 +96,8 @@ public class DeveloperOp {
 	public void confirmAssigment(int applicationID){
 		String sql = "update assign "
 				+ "set state = " + CONFIRMED + " "
-				+ "where applicationID = " + applicationID;
+				+ "where userID = '" + developerID + "' and "
+				+ "applicationID = " + applicationID;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
@@ -211,11 +212,19 @@ public class DeveloperOp {
 	}
 	
 	public static void main(String[] a){
-		DeveloperOp d = new DeveloperOp("2015110003");
-		List<Assignment> l = d.getUnconfirmedAssignments();
+		DeveloperOp d = new DeveloperOp("2015110001");
+		// getUnconfirmedAssignments
+//		List<Assignment> l = d.getUnconfirmedAssignments();
+		// getConfirmedAssignments
+//		List<Assignment> l = d.getConfirmedAssignments();
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getApplicationName());
+//			System.out.println(l.get(i).getApplicationID());
 //		}
+		
+		// confirmAssigment
+//		d.confirmAssigment(51438896);
+		
+		d.handinRecord(applicationID, actualDepartTime, 10, "111!!~~~");
 		
 
 	}
