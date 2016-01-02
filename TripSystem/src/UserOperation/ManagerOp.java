@@ -18,10 +18,14 @@ import Config.Config;
 import dao.DBHelper;
 
 public class ManagerOp {
+	// application
 	private final int APPROVED = 0;
 	private final int REFUSED = 1;
 	private final int WAITING = 2;
 	private final int CANCELED = 3;
+	// trip
+	private final int FINISHED = 0;
+	private final int ONGOING = 1;
 	
 	private String managerID;
 	private String url;
@@ -243,7 +247,20 @@ public class ManagerOp {
 				e.printStackTrace();
 			}
 		}
-		
+		startTrip(applicationID);
+	}
+	
+	private void startTrip(int applicationID){
+		String sql = "update trip "
+				+ "set state = " + ONGOING + " "
+				+ "where applicationID = " + applicationID;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	// ==============================================
 	// check application

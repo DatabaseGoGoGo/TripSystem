@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Trip {
+	private final int UNSTARTED = -1;
 	private final int FINISHED = 0;
 	private final int ONGOING = 1;
 	

@@ -11,8 +11,12 @@ import bean.Assignment;
 import Config.Config;
 
 public class DeveloperOp {
+	// assignment
 	private final int CONFIRMED = 0;
 	private final int WAITING = 2;
+	// trip
+	private final int FINISHED = 0;
+	private final int ONGOING = 1;
 	
 	private String developerID;
 	private String url;
@@ -111,10 +115,64 @@ public class DeveloperOp {
 			e.printStackTrace();
 		}
 		
-		checkTripState();
+		checkTripState(tripID, applicationID);
 	}
 	
-	public void checkTripState(){
-		
+	public void checkTripState(int tripID, int applicationID){
+		int developerNum = getDeveloperNum(applicationID);
+		int recordNum = getRecordNum(tripID);
+		if (recordNum == developerNum){
+			String sql = "update trip "
+					+ "set state = " + FINISHED + " "
+					+ "where applicationID = " + applicationID;
+			DBHelper dbHelper = new DBHelper(url, sql);    	
+			try {
+				dbHelper.getPst().executeUpdate();			
+				dbHelper.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private int getDeveloperNum (int applicationID){
+		int developerNum = 0;
+		String sql = "select count(userID) as developerNum "
+					+ "where applicationID = " + applicationID + " and "
+					+ "state = " +  CONFIRMED;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			developerNum = result.getInt("developerNum");
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return developerNum;
+	}
+
+	private int getRecordNum(int tripID){
+		int recordNum = 0;
+		String sql = "select count(userID) as recordNum "
+					+ "where tripID = " + tripID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			recordNum = result.getInt("recordNum");
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return recordNum;
 	}
 }
