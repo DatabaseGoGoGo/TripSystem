@@ -1,5 +1,6 @@
 package UserOperation;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.ListIterator;
 import bean.Application;
 import bean.Assignment;
 import bean.Trip;
+import bean.TripRecord;
 import bean.User;
 import Config.Config;
 import dao.DBHelper;
@@ -77,8 +79,9 @@ public class ManagerOp {
 		String sql = "select * from application "
 				+ "where projectID in ("
 				+ "select projectID from project "
-				+ "where projectName = " + name + ") "
+				+ "where projectName like '%" + name + "%') "
 				+ "order by applyTime DESC";
+		
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -89,7 +92,7 @@ public class ManagerOp {
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
 				int state = result.getInt("state");
-	
+				System.out.println(projectID);
 				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));
 			}
 			result.close();
@@ -188,7 +191,7 @@ public class ManagerOp {
 	
 	public void giveRefusedReason(int applicationID, String reason){
 		String sql = "insert into rejectionlog(applicationID, rejectReason) "
-					+ "values("+ applicationID + ", " + reason + ")";
+					+ "values("+ applicationID + ", '" + reason + "')";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
@@ -292,7 +295,7 @@ public class ManagerOp {
 	
 	public List<Trip> getAllTripState(){
 		List<Trip> trips = new LinkedList<Trip>();
-		String sql = "select applicationID, state from trip "
+		String sql = "select tripID, applicationID, state from trip "
 					+ "where applicationID in (" 
 						+ "select application.applicationID from application "
 						+ "where state = " + APPROVED + " and "
@@ -305,9 +308,10 @@ public class ManagerOp {
     	try {
     		result = dbHelper.getPst().executeQuery();
     		while (result.next()){
+    			int tripID = result.getInt("tripID");
     			int applicationID = result.getInt("applicationID");
     			int state = result.getInt("state");
-    			trips.add(new Trip(applicationID, state));
+    			trips.add(new Trip(tripID, applicationID, state));
     		}
     		result.close();
     		dbHelper.close();
@@ -328,14 +332,60 @@ public class ManagerOp {
 	// view assignment state
 	// ==============================================
 	
+	// ==============================================
+	// view finished trips' log
+	// ==============================================
+	/**
+	 * @description the trip with tripID should be finished
+	 * 				get the records of this trip
+	 * @param tripID
+	 * @return
+	 */
+	public List<TripRecord> getFinishedTripRecord(int tripID){
+		List<TripRecord> records = new LinkedList<TripRecord>();
+		String sql = "select * from tripRecord "
+					+ "where tripID = " + tripID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			String developerID = result.getString("userID");
+    			Date actualDepartTime = result.getDate("actualDepartTime");
+    			int actualTripDays = result.getInt("actualTripDays");    			
+    			String tripContent = result.getString("tripContent");
+
+    			records.add(new TripRecord(tripID, developerID, actualDepartTime, actualTripDays, tripContent));
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    
+    	Iterator<TripRecord> it = records.iterator();
+    	while(it.hasNext()){
+    		TripRecord record = (TripRecord)it.next();
+    		String developerName = generalOp.getNameByID(record.getDeveloperID(), "userName", "user");
+    		record.setDeveloperName(developerName);
+    	}
+    	
+		return records;
+	}
+	
+	// ==============================================
+	// view finished trips' log
+	// ==============================================
+	
+	
 	
 	
 	
 	public static void main(String[] a){
-//		ManagerOp m = new ManagerOp("2015110009");
-//		List<Application> l = m.getApplicationByState(0);
+		ManagerOp m = new ManagerOp("2015110009");
+		List<Trip> l = m.getAllTripState();
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getProjectName());
+//			System.out.println(l.get(i).getApplicationName());
 //		}
 		
 

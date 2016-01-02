@@ -8,11 +8,13 @@ public class Trip {
 	private final int ONGOING = 1;
 	
 	private List<User> developers = new LinkedList<User>();
+	private int tripID;
 	private int applicationID;
 	private int state;
 	private String tripName;
 	
-	public Trip(int applicationID, int state){
+	public Trip(int tripID, int applicationID, int state){
+		this.tripID = tripID;
 		this.applicationID = applicationID;
 		this.state = state;
 	}
