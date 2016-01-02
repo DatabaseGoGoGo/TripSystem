@@ -19,7 +19,7 @@ public class GeneralOp {
 		String nameByID = "";
 		
 		String sql = "select " + name + " from " + table + " "
-				+ "where "+ table + "ID == " + id;		
+				+ "where "+ table + "ID = " + id;		
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -38,7 +38,7 @@ public class GeneralOp {
 	public int getProjectIDByApplicationID(String applicationID){
 		int projectID = -1;
 		String sql = "select projectID from application "
-					+ "where applicationID == " + applicationID;		
+					+ "where applicationID = " + applicationID;		
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -54,5 +54,13 @@ public class GeneralOp {
 		return projectID;
 	}
 	
+	public static void main(String[] a){
+		GeneralOp g = new GeneralOp("jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8");
+//		String s = g.getProjectIDByApplicationID(+"");
+//		System.out.println(s);
+//		for (int i = 0, len = l.size(); i < len; i++){
+//			System.out.println(l.get(i).getProjectName());
+//		}
+	}
 
 }

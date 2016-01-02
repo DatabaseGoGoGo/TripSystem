@@ -19,11 +19,11 @@ public class ManagerOp {
 	private final int WAITING = 2;
 	private final int CANCELED = 3;
 	
-	private int managerID;
+	private String managerID;
 	private String url;
 	GeneralOp generalOp;
 	
-	public ManagerOp(int managerID){
+	public ManagerOp(String managerID){
 		this.managerID = managerID;
 		Config config = new Config();
 		url = config.getUrl();
@@ -36,9 +36,9 @@ public class ManagerOp {
 	public List<Application> getAllApplication(){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application "
-					+ "where projectID in ("
+					+ "where application.projectID in ("
 					+ "select projectID from project "
-					+ "where userID == " + managerID + ") "
+					+ "where project.userID = " + managerID + ") "
 					+ "order by applyTime DESC";
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
@@ -49,7 +49,7 @@ public class ManagerOp {
     			int projectID = result.getInt("projectID");
     			String applyerID = result.getString("applyerID");
     			int state = result.getInt("state");
-
+    			System.out.println("projectID:" + projectID);
     			applicationRequests.add(new Application(applicationID, applyerID, projectID, state));
     		}
     		result.close();
@@ -76,7 +76,7 @@ public class ManagerOp {
 		String sql = "select * from application "
 				+ "where projectID in ("
 				+ "select projectID from project "
-				+ "where projectName == " + name + ") "
+				+ "where projectName = " + name + ") "
 				+ "order by applyTime DESC";
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
@@ -110,10 +110,10 @@ public class ManagerOp {
 	public List<Application> getApplicationByState(int state){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application "
-				+ "where state == " + state + " and "
+				+ "where state = " + state + " and "
 				+ "projectID in ("
 				+ "select projectID from project "
-				+ "where userID == " + managerID + ") "
+				+ "where userID = " + managerID + ") "
 				+ "order by applyTime DESC";
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
@@ -176,7 +176,7 @@ public class ManagerOp {
 	public void setApplicationState(int applicationID, int state){
 		String sql = "update application "
 					+ "set state = " + state + " "
-					+ "where applicationID == " + applicationID;
+					+ "where applicationID = " + applicationID;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
@@ -209,7 +209,7 @@ public class ManagerOp {
 		String sql = "select userID, userName from user "
 					+ "where userID in ("
 					+ "select userID from develop "
-					+ "where projectID == " + projectID + ")";
+					+ "where projectID = " + projectID + ")";
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
     	try {
@@ -240,26 +240,10 @@ public class ManagerOp {
 	
 	
 	public static void main(String[] a){
-		List<String> l = new LinkedList<String>();
-		List<String> newl = new LinkedList<String>();
-		for (int i = 0; i < 8; i++){
-			l.add(""+i);
-		}
-		Iterator<String> it= l.listIterator();
-		while (it.hasNext()){
-			String s = it.next();
-			if (s.equals("6") || s.equals("2")){
-				it.remove();
-				newl.add(s);
-			}
-		}
-		it= l.listIterator();
-		while (it.hasNext()){
-			String s = it.next();
-				newl.add(s);
-		}
-		for (int i = 0, len = newl.size(); i < len; i++) {  
-		    System.out.print(newl.get(i) + " ");  
+		ManagerOp m = new ManagerOp("2015110009");
+		List<Application> l = m.getAllApplication();
+		for (int i = 0, len = l.size(); i < len; i++){
+			System.out.println(l.get(i).getProjectName());
 		}
 	}
 }

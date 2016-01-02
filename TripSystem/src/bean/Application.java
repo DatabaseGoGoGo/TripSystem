@@ -27,6 +27,10 @@ public class Application {
 		this.projectName = name;
 	}
 	
+	public String getProjectName(){
+		return projectName;
+	}
+	
 	public String getApplyerID(){
 		return applyerID;
 	}
