@@ -10,6 +10,7 @@ import dao.DBHelper;
 import bean.Application;
 import bean.Assignment;
 import bean.Project;
+import bean.Trip;
 import Config.Config;
 
 public class DeveloperOp {
@@ -206,6 +207,16 @@ public class DeveloperOp {
 		}
     	
     	return projects;
+	}
+	
+	public static void main(String[] a){
+		DeveloperOp d = new DeveloperOp("2015110003");
+		List<Assignment> l = d.getUnconfirmedAssignments();
+//		for (int i = 0, len = l.size(); i < len; i++){
+//			System.out.println(l.get(i).getApplicationName());
+//		}
+		
+
 	}
 
 }
