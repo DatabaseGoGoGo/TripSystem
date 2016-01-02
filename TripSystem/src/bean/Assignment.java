@@ -11,6 +11,12 @@ public class Assignment {
 	private List<Integer> developerState = new LinkedList<Integer>();
 	private List<String> developerStateName = new LinkedList<String>();
 	private int applicationID;
+	private String applicationName;
+	
+	public Assignment(int applicationID, String applicationName){
+		this.applicationID = applicationID;
+		this.applicationName = applicationName;
+	}
 	
 	public Assignment(int applicationID){
 		this.applicationID = applicationID;

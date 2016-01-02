@@ -56,8 +56,8 @@ public class GeneralOp {
 	
 	public static void main(String[] a){
 		GeneralOp g = new GeneralOp("jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8");
-//		String s = g.getProjectIDByApplicationID(+"");
-//		System.out.println(s);
+		String s = g.getNameByID("2015110001", "userName", "user");
+		System.out.println(s);
 //		for (int i = 0, len = l.size(); i < len; i++){
 //			System.out.println(l.get(i).getProjectName());
 //		}

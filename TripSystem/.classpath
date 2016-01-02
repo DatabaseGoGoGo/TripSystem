@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="E:/github/TripSystem/jxl.jar"/>
-	<classpathentry kind="lib" path="E:/github/TripSystem/mysql-connector-java-5.1.13-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+	<classpathentry kind="lib" path="D:/school(imp)/校园生活/学习，考试/Database/pj/TripSystem/jxl.jar"/>
+	<classpathentry kind="lib" path="D:/school(imp)/校园生活/学习，考试/Database/pj/TripSystem/mysql-connector-java-5.1.13-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
