@@ -100,13 +100,6 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
 		
-//		Iterator<Application> it=applicationRequests.iterator();
-//    	while(it.hasNext()){
-//    		Application a = (Application)it.next();
-//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-//    		a.setApplyerName(applyerName);
-//    	}
-		
 		return applicationRequests;
 	}
 	
@@ -136,13 +129,6 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-//		Iterator<Application> it=applicationRequests.iterator();
-//    	while(it.hasNext()){
-//    		Application a = (Application)it.next();
-//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-//    		a.setApplyerName(applyerName);
-//    	}
 		
 		return applicationRequests;
 	}
@@ -217,7 +203,7 @@ public class ManagerOp {
 		}		
 	}
 	
-	public List<User> getAllDeveloperByProjectID(String applicationID){
+	public List<User> getAllDeveloperByApplicationID(String applicationID){
 		int projectID = generalOp.getProjectIDByApplicationID(applicationID);
 		if (projectID == -1){
 			System.out.println("getProjectIDByApplicationID failed");
@@ -409,9 +395,6 @@ public class ManagerOp {
 	// ==============================================
 	
 	
-	
-	
-	
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
 		// getAllApplication();
@@ -426,7 +409,18 @@ public class ManagerOp {
 //		System.out.println(l.size());
 		
 		// setApplicationState
-		m.setApplicationState(52146766, 0);
+//		m.setApplicationState(51438896, 1);
+		// giveRefusedReason
+//		m.giveRefusedReason(51438896, "~~~~~~~~~~`");
+		
+		
+		// getApplicationByState(0)
+//		List<User> l = m.getAllDeveloperByApplicationID(applicationID);
+//		for (int i = 0, len = l.size(); i < len; i++){
+//			System.out.println(l.get(i).getApplicationID());
+//		}
+//		System.out.println(l.size());
+		
 
 	}
 }
