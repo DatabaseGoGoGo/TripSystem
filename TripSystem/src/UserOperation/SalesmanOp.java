@@ -8,6 +8,7 @@ import java.util.List;
 
 import dao.DBHelper;
 import bean.Application;
+import bean.Assignment;
 import bean.RejectLog;
 import bean.Trip;
 import Config.Config;
@@ -154,6 +155,19 @@ public class SalesmanOp {
 				+ trip.getTripID() + ", " + trip.getApplicationID() + ", \n"
 				+ "'" + trip.getDepartTime() + "', " + trip.getDays() + ", \n"
 				+ "'" + trip.getDescription() + "', " + trip.getState() + ");\n";
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void assignTrip(String developerID, int applicationID) {
+		String sql = "insert into assign(applicationID, userID, state) values("
+				+ applicationID + ", '" + developerID +"', "
+				+ Assignment.WAITING + ");";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			

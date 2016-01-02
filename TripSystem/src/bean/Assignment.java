@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Assignment {
-	private final int CONFIRMED = 0;
-	private final int WAITING = 2;
+	public static final int CONFIRMED = 0;
+	public static final int WAITING = 2;
 	
 	private List<User> developersAssignedTo = new LinkedList<User>();
 	private List<Integer> developerState = new LinkedList<Integer>();
