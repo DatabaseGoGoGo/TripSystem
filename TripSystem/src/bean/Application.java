@@ -25,6 +25,16 @@ public class Application {
 		this.applicationName = applicationName;
 	}
 	
+	public Application(int applicationID, String applicationName, String applyerID, String applyerName, int projectID, int state){
+		this.applicationID = applicationID;
+		this.applicationName = applicationName;
+		this.projectID = projectID;
+		this.applyerID = applyerID;
+		this.applicationName = applicationName;
+		this.state = state;
+		this.applicationName = applicationName;
+	}
+	
 	public Time getApplyTime() {
 		return applyTime;
 	}
