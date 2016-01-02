@@ -11,11 +11,20 @@ public class Application {
 	private int projectID;
 	private String applyerID;
 	private int state;
-	private String projectName;
+	private String applicationName;
 	private String applyerName;
 	private String applicationName;
 	private Time applyTime;
 	private int rejectTimes;
+	
+	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
+		this.applicationID = applicationID;
+		this.applicationName = applicationName;
+		this.projectID = projectID;
+		this.applyerID = applyerID;
+		this.state = state;
+		this.applicationName = applicationName;
+	}
 	
 	public Time getApplyTime() {
 		return applyTime;
@@ -32,13 +41,6 @@ public class Application {
 	public int getRejectTimes() {
 		return rejectTimes;
 	}
-	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
-		this.applicationID = applicationID;
-		this.applicationName = applicationName;
-		this.projectID = projectID;
-		this.applyerID = applyerID;
-		this.state = state;
-	}
 	
 	public int getApplicationID() {
 		return applicationID;
@@ -48,8 +50,9 @@ public class Application {
 		this.applyerName = name;
 	}
 	
-	public void setProjectName(String name){
-		this.projectName = name;
+
+	public String getApplicationName(){
+		return applicationName;
 	}
 	
 	public String getApplyerID(){
@@ -84,5 +87,4 @@ public class Application {
 		}
 		return stateName;
 	}
-
 }
