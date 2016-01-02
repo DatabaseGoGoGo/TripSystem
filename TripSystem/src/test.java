@@ -11,8 +11,8 @@ import UserOperation.SalesmanOp;
 
 public class test {
 	public static void main(String[] argv) {
-		SalesmanOp salesman = new SalesmanOp("2015110005");
-		List<Application> applications = generateAppliations(2);
+		SalesmanOp salesman = new SalesmanOp("2015110012");
+		List<Application> applications = generateAppliations(12);
 		List<Trip> trips = generateTrip(applications);
 		salesman.createApplication(applications.get(0), trips.get(0));
 		salesman.createApplication(applications.get(1), trips.get(1));
@@ -25,8 +25,8 @@ public class test {
 		for (int i = 0; i < size; i++) {
 			int applicationID = (int) System.currentTimeMillis();
 			String applicationName = "applyYooo" + random.nextInt(100);
-			String applyerID = "2015110005";
-			int projectID = 2015120001;
+			String applyerID = "2015110012";
+			int projectID = 2015120008;
 			int state = Application.WAITING;
 			Application application = new Application(applicationID, applicationName, applyerID, projectID, state);
 			appList.add(application);

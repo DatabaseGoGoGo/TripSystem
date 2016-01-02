@@ -44,10 +44,11 @@ public class ManagerOp {
 	public List<Application> getAllApplication(){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application, user "
-					+ "where application.projectID in ("
+					+ "where application.userID = user.userID and "
+					+ "application.projectID in ("
 					+ "select projectID from project "
 					+ "where project.userID = " + managerID + ") "
-					+ "order by applyTime DESC";
+					+ "order by applyTime";
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
     	try {
@@ -59,7 +60,6 @@ public class ManagerOp {
     			String applyerID = result.getString("userID");
     			String applyerName = result.getString("userName");
     			int state = result.getInt("state");
-    			System.out.println("projectID:" + projectID);
     			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
     		}
     		result.close();
@@ -67,22 +67,16 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    
-//    	Iterator<Application> it=applicationRequests.iterator();
-//    	while(it.hasNext()){
-//    		Application a = (Application)it.next();
-//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-//    		a.setApplyerName(applyerName);
-//    	}
-    	
-    	
-    	return applicationRequests;
+    	 
+		return sortRequest(applicationRequests);
+//    	return applicationRequests;
 	}
 
 	public List<Application> getApplicationByProjectName(String name){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application, user "
-				+ "where projectID in ("
+				+ "where application.userID = user.userID and "
+				+ "projectID in ("
 				+ "select projectID from project "
 				+ "where projectName like '%" + name + "%') "
 				+ "order by applyTime DESC";
@@ -98,7 +92,6 @@ public class ManagerOp {
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
 				int state = result.getInt("state");
-				System.out.println(projectID);
 				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
 			}
 			result.close();
@@ -120,7 +113,8 @@ public class ManagerOp {
 	public List<Application> getApplicationByState(int state){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application, user "
-				+ "where state = " + state + " and "
+				+ "where application.userID = user.userID and "
+				+ "state = " + state + " and "
 				+ "projectID in ("
 				+ "select projectID from project "
 				+ "where userID = '" + managerID + "') "
@@ -150,8 +144,7 @@ public class ManagerOp {
 //    		a.setApplyerName(applyerName);
 //    	}
 		
-    	List<Application> allApplication = sortRequest(applicationRequests);
-		return allApplication;
+		return applicationRequests;
 	}
 	
 	/**
@@ -188,8 +181,9 @@ public class ManagerOp {
 					+ "where applicationID = " + applicationID;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
-			dbHelper.getPst().executeUpdate();			
+			dbHelper.getPst().executeUpdate();
 			dbHelper.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -420,11 +414,19 @@ public class ManagerOp {
 	
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
-		List<Application> l = m.getAllApplication();
+		// getAllApplication();
+//		List<Application> l = m.getAllApplication();
+		// getApplicationByProjectName
+//		List<Application> l = m.getApplicationByProjectName("№ЬАн");
+		// getApplicationByState(0)
+//		List<Application> l = m.getApplicationByState(2);
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getApplicationName());
+//			System.out.println(l.get(i).getApplicationID());
 //		}
+//		System.out.println(l.size());
 		
+		// setApplicationState
+		m.setApplicationState(52146766, 0);
 
 	}
 }

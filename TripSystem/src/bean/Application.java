@@ -24,7 +24,6 @@ public class Application {
 		this.applyerID = applyerID;
 		this.applyerName = applerName;
 		this.state = state;
-		this.applicationName = applicationName;
 	}
 	
 	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
@@ -33,7 +32,6 @@ public class Application {
 		this.projectID = projectID;
 		this.applyerID = applyerID;
 		this.state = state;
-		this.applicationName = applicationName;
 	}
 	
 
