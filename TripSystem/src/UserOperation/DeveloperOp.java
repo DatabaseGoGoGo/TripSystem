@@ -110,7 +110,7 @@ public class DeveloperOp {
 		int tripID = generalOp.getTripIDByApplicationID(applicationID+"");
 		List<Assignment> assignments = new LinkedList<Assignment>();
 		String sql = "insert into triprecord(tripID, userID, actualDepartTime, actualTripDays, tripContent) "
-				+ "values("+ tripID + ", " + actualDepartTime + ", " + actualTripDays + ", " + tripContent + ")";
+				+ "values("+ tripID + ", '" + developerID + "', '" + actualDepartTime + "', " + actualTripDays + ", '" + tripContent + "')";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			

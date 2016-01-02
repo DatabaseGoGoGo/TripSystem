@@ -43,7 +43,7 @@ public class ManagerOp {
 	// ==============================================
 	public List<Application> getAllApplication(){
 		List<Application> applicationRequests = new LinkedList<Application>();
-		String sql = "select * from application "
+		String sql = "select * from application, user "
 					+ "where application.projectID in ("
 					+ "select projectID from project "
 					+ "where project.userID = " + managerID + ") "
@@ -56,10 +56,11 @@ public class ManagerOp {
     			int applicationID = result.getInt("applicationID");
     			String applicationName = result.getString("applicationName");
     			int projectID = result.getInt("projectID");
-    			String applyerID = result.getString("userID");    			
+    			String applyerID = result.getString("userID");
+    			String applyerName = result.getString("userName");
     			int state = result.getInt("state");
     			System.out.println("projectID:" + projectID);
-    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
     		}
     		result.close();
     		dbHelper.close();
@@ -67,12 +68,12 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
     
-    	Iterator<Application> it=applicationRequests.iterator();
-    	while(it.hasNext()){
-    		Application a = (Application)it.next();
-    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-    		a.setApplyerName(applyerName);
-    	}
+//    	Iterator<Application> it=applicationRequests.iterator();
+//    	while(it.hasNext()){
+//    		Application a = (Application)it.next();
+//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
+//    		a.setApplyerName(applyerName);
+//    	}
     	
     	
     	return applicationRequests;
@@ -80,7 +81,7 @@ public class ManagerOp {
 
 	public List<Application> getApplicationByProjectName(String name){
 		List<Application> applicationRequests = new LinkedList<Application>();
-		String sql = "select * from application "
+		String sql = "select * from application, user "
 				+ "where projectID in ("
 				+ "select projectID from project "
 				+ "where projectName like '%" + name + "%') "
@@ -95,9 +96,10 @@ public class ManagerOp {
 				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
+				String applyerName = result.getString("userName");
 				int state = result.getInt("state");
 				System.out.println(projectID);
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
 			}
 			result.close();
 			dbHelper.close();
@@ -105,19 +107,19 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
 		
-		Iterator<Application> it=applicationRequests.iterator();
-    	while(it.hasNext()){
-    		Application a = (Application)it.next();
-    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-    		a.setApplyerName(applyerName);
-    	}
+//		Iterator<Application> it=applicationRequests.iterator();
+//    	while(it.hasNext()){
+//    		Application a = (Application)it.next();
+//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
+//    		a.setApplyerName(applyerName);
+//    	}
 		
 		return applicationRequests;
 	}
 	
 	public List<Application> getApplicationByState(int state){
 		List<Application> applicationRequests = new LinkedList<Application>();
-		String sql = "select * from application "
+		String sql = "select * from application, user "
 				+ "where state = " + state + " and "
 				+ "projectID in ("
 				+ "select projectID from project "
@@ -132,8 +134,8 @@ public class ManagerOp {
 				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
-	
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));				
+				String applyerName = result.getString("userName");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));				
 			}
 			result.close();
 			dbHelper.close();
@@ -141,12 +143,12 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
 		
-		Iterator<Application> it=applicationRequests.iterator();
-    	while(it.hasNext()){
-    		Application a = (Application)it.next();
-    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-    		a.setApplyerName(applyerName);
-    	}
+//		Iterator<Application> it=applicationRequests.iterator();
+//    	while(it.hasNext()){
+//    		Application a = (Application)it.next();
+//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
+//    		a.setApplyerName(applyerName);
+//    	}
 		
     	List<Application> allApplication = sortRequest(applicationRequests);
 		return allApplication;
@@ -294,7 +296,7 @@ public class ManagerOp {
 	public Assignment getAssignmentStateByID(int applicationID){
 		List<User> developersAssignedTo = new LinkedList<User>();
 		List<Integer> developerState = new LinkedList<Integer>();
-		String sql = "select * from assign "
+		String sql = "select * from assign, user "
 					+ "where applicationID = " + applicationID;
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);
@@ -302,8 +304,9 @@ public class ManagerOp {
     		result = dbHelper.getPst().executeQuery();
     		while (result.next()){
     			String developerID = result.getString("userID");
+    			String developerName = result.getString("userName");
     			int state = result.getInt("state");
-    			developersAssignedTo.add(new User(developerID));
+    			developersAssignedTo.add(new User(developerID, developerName));
     			developerState.add(state);
     		}
     		result.close();
@@ -311,13 +314,13 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	// set userName
-    	Iterator<User> it = developersAssignedTo.iterator();
-    	while(it.hasNext()){
-    		User user = (User)it.next();
-    		String develpoerName = generalOp.getNameByID(user.getUserID(), "userName", "user");
-    		user.setUserName(develpoerName);
-    	}
+//    	// set userName
+//    	Iterator<User> it = developersAssignedTo.iterator();
+//    	while(it.hasNext()){
+//    		User user = (User)it.next();
+//    		String develpoerName = generalOp.getNameByID(user.getUserID(), "userName", "user");
+//    		user.setUserName(develpoerName);
+//    	}
     	// init assignment
     	Assignment assignment = new Assignment(applicationID);
     	assignment.setDevelopersAssignedTo(developersAssignedTo);
@@ -376,7 +379,7 @@ public class ManagerOp {
 	 */
 	public List<TripRecord> getFinishedTripRecord(int tripID){
 		List<TripRecord> records = new LinkedList<TripRecord>();
-		String sql = "select * from tripRecord "
+		String sql = "select * from tripRecord, user "
 					+ "where tripID = " + tripID;
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
@@ -384,11 +387,12 @@ public class ManagerOp {
     		result = dbHelper.getPst().executeQuery();
     		while (result.next()){
     			String developerID = result.getString("userID");
+    			String developerName = result.getString("userName");
     			Date actualDepartTime = result.getDate("actualDepartTime");
     			int actualTripDays = result.getInt("actualTripDays");    			
     			String tripContent = result.getString("tripContent");
 
-    			records.add(new TripRecord(tripID, developerID, actualDepartTime, actualTripDays, tripContent));
+    			records.add(new TripRecord(tripID, developerID, developerName, actualDepartTime, actualTripDays, tripContent));
     		}
     		result.close();
     		dbHelper.close();
@@ -396,12 +400,12 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
     
-    	Iterator<TripRecord> it = records.iterator();
-    	while(it.hasNext()){
-    		TripRecord record = (TripRecord)it.next();
-    		String developerName = generalOp.getNameByID(record.getDeveloperID(), "userName", "user");
-    		record.setDeveloperName(developerName);
-    	}
+//    	Iterator<TripRecord> it = records.iterator();
+//    	while(it.hasNext()){
+//    		TripRecord record = (TripRecord)it.next();
+//    		String developerName = generalOp.getNameByID(record.getDeveloperID(), "userName", "user");
+//    		record.setDeveloperName(developerName);
+//    	}
     	
 		return records;
 	}
@@ -416,7 +420,7 @@ public class ManagerOp {
 	
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
-		List<Trip> l = m.getAllTripState();
+		List<Application> l = m.getAllApplication();
 //		for (int i = 0, len = l.size(); i < len; i++){
 //			System.out.println(l.get(i).getApplicationName());
 //		}

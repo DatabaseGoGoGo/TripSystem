@@ -26,7 +26,21 @@ public class Application {
 		this.applicationName = applicationName;
 	}
 	
+<<<<<<< HEAD
 	public Timestamp getApplyTime() {
+=======
+	public Application(int applicationID, String applicationName, String applyerID, String applyerName, int projectID, int state){
+		this.applicationID = applicationID;
+		this.applicationName = applicationName;
+		this.projectID = projectID;
+		this.applyerID = applyerID;
+		this.applicationName = applicationName;
+		this.state = state;
+		this.applicationName = applicationName;
+	}
+	
+	public Time getApplyTime() {
+>>>>>>> a1d16561c928012edef4fe64074e3ae4c900ab2e
 		return applyTime;
 	}
 

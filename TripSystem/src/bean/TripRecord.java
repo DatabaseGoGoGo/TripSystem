@@ -18,6 +18,15 @@ public class TripRecord {
 		this.tripContent = tripContent;
 	}
 	
+	public TripRecord(int tripID, String developerID, String developerName, Date actualDepartTime, int actualTripDays, String tripContent){
+		this.tripID = tripID;
+		this.developerID = developerID;
+		this.developerName = developerName;
+		this.actualDepartTime = actualDepartTime;
+		this.actualTripDays = actualTripDays;
+		this.tripContent = tripContent;
+	}
+	
 	public void setDeveloperName(String name){
 		this.developerName = name;
 	}
