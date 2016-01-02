@@ -100,13 +100,6 @@ public class ManagerOp {
 			e.printStackTrace();
 		}
 		
-//		Iterator<Application> it=applicationRequests.iterator();
-//    	while(it.hasNext()){
-//    		Application a = (Application)it.next();
-//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-//    		a.setApplyerName(applyerName);
-//    	}
-		
 		return applicationRequests;
 	}
 	
@@ -136,13 +129,6 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-//		Iterator<Application> it=applicationRequests.iterator();
-//    	while(it.hasNext()){
-//    		Application a = (Application)it.next();
-//    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-//    		a.setApplyerName(applyerName);
-//    	}
 		
 		return applicationRequests;
 	}
@@ -407,9 +393,6 @@ public class ManagerOp {
 	// ==============================================
 	// view finished trips' log
 	// ==============================================
-	
-	
-	
 	
 	
 	public static void main(String[] a){
