@@ -9,18 +9,19 @@ public class Trip {
 	private int applicationID;
 	private Date departTime;
 	private int days;
-	private String description;
+	private String description = "";
 	private int state;
 	private String tripName;
 
-	private final int UNSTARTED = -1;
-	private final int FINISHED = 0;
-	private final int ONGOING = 1;
+	public static final int UNSTARTED = -1;
+	public static final int FINISHED = 0;
+	public static final int ONGOING = 1;
 	
 	private List<User> developers = new LinkedList<User>();
 	
 	public Trip(int tripID, int applicationID, int state){
 		this.tripID = tripID;
+		this.tripName = applicationID + "_trip";
 		this.applicationID = applicationID;
 		this.state = state;
 	}
