@@ -48,7 +48,10 @@ create table application
    applicationID        decimal not null,
    projectID            decimal not null,
    userID               char(20) not null,
+   applicationName          char(20) not null,
    state                decimal not null,
+   applyTime            datetime,   
+   rejectTimes          int not null,
    primary key (applicationID)
 );
 
@@ -59,8 +62,7 @@ create table assign
 (
    applicationID        decimal not null,
    userID               char(20) not null,
-   state                char(10),
-   applyTime            datetime,
+   state                decimal not null,
    primary key (applicationID, userID)
 );
 
@@ -109,10 +111,9 @@ create table project
 /*==============================================================*/
 create table rejectionLog
 (
-   rejectionID          decimal not null,
+   rejectionID          integer not null auto_increment,
    applicationID        decimal not null,
    rejectReason         char(200),
-   rejectTimes          int not null,
    primary key (rejectionID)
 );
 
@@ -136,6 +137,7 @@ create table trip
    groupNumber          decimal not null,
    days                 decimal not null,
    description          char(200) not null,
+   state                decimal not null,
    primary key (tripID)
 );
 

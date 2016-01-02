@@ -1,22 +1,47 @@
 package bean;
 
+import java.sql.Time;
+
 public class Application {
-	private final int APPROVED = 0;
-	private final int REFUSED = 1;
-	private final int WAITING = 2;
-	private final int CANCELED = 3;
+	public final int APPROVED = 0;
+	public final int REFUSED = 1;
+	public final int WAITING = 2;
+	public final int CANCELED = 3;
 	private int applicationID;
 	private int projectID;
-	private int applyerID;
+	private String applyerID;
 	private int state;
 	private String projectName;
 	private String applyerName;
+	private String applicationName;
+	private Time applyTime;
+	private int rejectTimes;
 	
-	public Application(int applicationID, int applyerID, int projectID, int state){
+	public Time getApplyTime() {
+		return applyTime;
+	}
+
+	public void setApplyTime(Time applyTime) {
+		this.applyTime = applyTime;
+	}
+	
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public int getRejectTimes() {
+		return rejectTimes;
+	}
+	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
 		this.applicationID = applicationID;
+		this.applicationName = applicationName;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
 		this.state = state;
+	}
+	
+	public int getApplicationID() {
+		return applicationID;
 	}
 	
 	public void setApplyerName(String name){
@@ -27,7 +52,7 @@ public class Application {
 		this.projectName = name;
 	}
 	
-	public int getApplyerID(){
+	public String getApplyerID(){
 		return applyerID;
 	}
 	
