@@ -45,17 +45,7 @@ public class SalesmanOp {
 			dbHelper.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		
-		Iterator<Application> it= myApplications.iterator();
-    	while(it.hasNext()){
-    		Application a = (Application)it.next();
-    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-    		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
-    		a.setProjectName(projectName);
-    	}
-		
+		}		
 		return myApplications;
 	}
 	
@@ -81,15 +71,6 @@ public class SalesmanOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		Iterator<Application> it=applicationRequests.iterator();
-    	while(it.hasNext()){
-    		Application a = (Application)it.next();
-    		String applyerName = generalOp.getNameByID(a.getApplyerID(), "userName", "user");
-    		a.setApplyerName(applyerName);
-    		String projectName = generalOp.getNameByID(a.getProjectID()+"", "projectName", "project");
-    		a.setProjectName(projectName);
-    	}
 		
     	List<Application> allApplication = sortRequest(applicationRequests);
 		return allApplication;

@@ -23,6 +23,8 @@ drop table if exists rejectionLog;
 
 drop table if exists salesman;
 
+drop table if exists sell;
+
 drop table if exists trip;
 
 drop table if exists tripRecord;
@@ -127,6 +129,16 @@ create table salesman
 );
 
 /*==============================================================*/
+/* Table: sell                                               */
+/*==============================================================*/
+create table sell
+(
+   projectID            decimal not null,
+   userID               char(20) not null,
+   primary key (projectID, userID)
+);
+
+/*==============================================================*/
 /* Table: trip                                                  */
 /*==============================================================*/
 create table trip
@@ -134,7 +146,6 @@ create table trip
    tripID               decimal not null,
    applicationID        decimal not null,
    departTime           date not null,
-   groupNumber          decimal not null,
    days                 decimal not null,
    description          char(200) not null,
    state                decimal not null,
@@ -201,6 +212,12 @@ alter table rejectionLog add constraint FK_reject foreign key (applicationID)
 
 alter table salesman add constraint FK_Inheritance_3 foreign key (userID)
       references user (userID) on delete restrict on update restrict;
+
+alter table sell add constraint FK_sell foreign key (projectID)
+      references project (projectID) on delete restrict on update restrict;
+
+alter table sell add constraint FK_sell2 foreign key (userID)
+      references developer (userID) on delete restrict on update restrict;
 
 alter table trip add constraint FK_generate1 foreign key (applicationID)
       references application (applicationID) on delete restrict on update restrict;

@@ -30,6 +30,7 @@ public class DeveloperOp {
 		Config config = new Config();
 		url = config.getUrl();
 		generalOp = new GeneralOp(url);
+		
 	}
 	
 	/**

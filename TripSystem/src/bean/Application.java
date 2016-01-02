@@ -3,17 +3,16 @@ package bean;
 import java.sql.Time;
 
 public class Application {
-	public final int APPROVED = 0;
-	public final int REFUSED = 1;
-	public final int WAITING = 2;
-	public final int CANCELED = 3;
+	public static final int APPROVED = 0;
+	public static final int REFUSED = 1;
+	public static final int WAITING = 2;
+	public static final int CANCELED = 3;
 	private int applicationID;
 	private int projectID;
 	private String applyerID;
 	private int state;
 	private String applicationName;
 	private String applyerName;
-	private String applicationName;
 	private Time applyTime;
 	private int rejectTimes;
 	
@@ -33,10 +32,6 @@ public class Application {
 	public void setApplyTime(Time applyTime) {
 		this.applyTime = applyTime;
 	}
-	
-	public String getApplicationName() {
-		return applicationName;
-	}
 
 	public int getRejectTimes() {
 		return rejectTimes;
@@ -50,7 +45,6 @@ public class Application {
 		this.applyerName = name;
 	}
 	
-
 	public String getApplicationName(){
 		return applicationName;
 	}

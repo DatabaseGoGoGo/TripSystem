@@ -1,6 +1,8 @@
 package bean;
 
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Trip {
 	private int tripID;
@@ -16,19 +18,11 @@ public class Trip {
 	private final int ONGOING = 1;
 	
 	private List<User> developers = new LinkedList<User>();
-	private int tripID;
-	private int applicationID;
-	private int state;
-	private String tripName;
 	
 	public Trip(int tripID, int applicationID, int state){
 		this.tripID = tripID;
 		this.applicationID = applicationID;
 		this.state = state;
-	}
-	
-	public int getApplicationID(){
-		return applicationID;
 	}
 	
 	public void setTripName(String name){
@@ -41,12 +35,6 @@ public class Trip {
 		this.departTime = departTime;
 		this.days = days;
 		this.description = description;
-		this.state = state;
-	}
-	
-	public Trip(int tripID, int applicationID, int state){
-		this.tripID = tripID;
-		this.applicationID = applicationID;
 		this.state = state;
 	}
 	
