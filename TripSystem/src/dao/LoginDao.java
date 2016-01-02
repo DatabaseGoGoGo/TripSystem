@@ -17,6 +17,18 @@ public class LoginDao {
 	private String dbUsername = "root";
 	private String dbPassword = "950720SophiaYj";
 	
+	static {
+		  try {
+		    Class.forName(driver).newInstance();
+		  } catch (ClassNotFoundException e) {
+		    e.printStackTrace();
+		  } catch (InstantiationException e) {
+		    e.printStackTrace();
+		  } catch (IllegalAccessException e) {
+			e.printStackTrace();
+		  }
+	}
+	
 	public static LoginDao getInstance() {
 	    if (dao == null) {
 	      dao = new LoginDao();
@@ -31,7 +43,7 @@ public class LoginDao {
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();
-			results = sm.executeQuery("select * from users user where user.userID='"+userID+"'");
+			results = sm.executeQuery("select * from user where userID='"+userID+"'");
 			if(results.next()){
 				String oldPassword = results.getString("password");
 				if(oldPassword.equals(password)){
