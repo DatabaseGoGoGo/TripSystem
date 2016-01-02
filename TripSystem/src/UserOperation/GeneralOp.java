@@ -54,6 +54,25 @@ public class GeneralOp {
 		return projectID;
 	}
 	
+	public int getTripIDByApplicationID(String applicationID){
+		int tripID = -1;
+		String sql = "select tripID from trip "
+					+ "where applicationID = " + applicationID;		
+		ResultSet result;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			result = dbHelper.getPst().executeQuery();
+			while (result.next()){
+				tripID = result.getInt("tripID");			
+			}
+			result.close();
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tripID;
+	}
+	
 	public static void main(String[] a){
 		GeneralOp g = new GeneralOp("jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8");
 		String s = g.getNameByID("2015110001", "userName", "user");
