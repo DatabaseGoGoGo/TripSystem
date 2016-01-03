@@ -8,6 +8,7 @@ import UserOperation.DeveloperOp;
 import UserOperation.ManagerOp;
 import bean.Application;
 import bean.Assignment;
+import bean.Project;
 import bean.Trip;
 import bean.TripRecord;
 import bean.User;
@@ -65,10 +66,12 @@ public class enterTripSystem {
 	// input request
 	private static final String viewAllUncomfirmedAssignments = "show me all uncomfirmed assignments";
 	private static final String viewAllComfirmedAssignments = "show me all comfirmed assignments";
+	//private static final String viewOneAssignment = "show me the assignment's infomation";
 	private static final String confirmAssigment = "confirm assignment";
 	private static final String handinRecord = "hand in record";
 	private static final String viewResponsiblePj = "show me the project I responsible for";
 	// output hint
+	private static final String enterTripRecordHint = "please enter the trip record in the following format: (e.g. actualDepartTime, actualTripDays, tripContent";
 	
 	public static void main(String[] argv) {
 		welcome();
@@ -134,20 +137,19 @@ public class enterTripSystem {
 			command = scanner.nextLine();
 			switch (command){
 				case viewAllComfirmedAssignments:
-					show(managerOp, command);
+					viewAssignment(developerOp.getConfirmedAssignments());
 					break;
-				case search:
-					search(managerOp, command);
+				case viewAllUncomfirmedAssignments:
+					viewAssignment(developerOp.getUnconfirmedAssignments());
 					break;
-				case approve:
-					approveApplication(managerOp);
+				case confirmAssigment:
+					confirmAssignment(developerOp);
 					break;
-				case reject:
-					rejectApplication(managerOp);
+				case handinRecord:
+					handinRecord(developerOp);
 					break;
-				case assign:
-					assignDevelopersToPj(managerOp);
-					break;
+				case viewResponsiblePj:
+					viewProject(developerOp.getAllprojects());
 				default:
 					break;
 			}
@@ -287,8 +289,39 @@ public class enterTripSystem {
 		}
 	}
 	
+	/* developer operation */
 	private static void viewAssignment(List<Assignment> assignments){
-		
+		if (assignments.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = assignments.size(); i < len; i++){
+			System.out.println(assignments.get(i).toString());
+		}
+	}
+	
+	private static void viewProject(List<Project> projects){
+		if (projects.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = projects.size(); i < len; i++){
+			System.out.println(projects.get(i).toString());
+		}
+	}
+	
+	private static void confirmAssignment(DeveloperOp developerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		developerOp.confirmAssigment(applicationID);
+		System.out.println("confirmed successfuly!");
+	}
+	
+	private static void handinRecord(DeveloperOp developerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		printHint(enterTripRecordHint);
+		String[] info = splitToken(scanner.nextLine(), ", ");
+		developerOp.handinRecord(applicationID+"", info[0], info[1], info[2]);
+		System.out.println("handed successfully!");
 	}
 	
 	private static void printHint(String hint){
