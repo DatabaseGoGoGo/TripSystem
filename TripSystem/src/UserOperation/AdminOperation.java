@@ -239,12 +239,14 @@ public class AdminOperation {
 	  return null;
   }
   
-  public void updateUser(User user) {
+  public boolean updateUser(User user) {
 	  try {
 		  MySqlDao mySqlDao = MySqlDao.getInstance();;
 		  mySqlDao.updateUser(user);
+		  return true;
 	  } catch (SQLException e) {
 		  e.printStackTrace();
+		  return false;
 	  }
   }
   
