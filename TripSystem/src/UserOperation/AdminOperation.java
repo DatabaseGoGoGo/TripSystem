@@ -43,7 +43,7 @@ public class AdminOperation {
 
     Workbook workbook = null;
     try {
-      workbook = Workbook.getWorkbook(new File("ExcelData/01初始用户数据.xls"));
+      workbook = Workbook.getWorkbook(new File("Excel/01初始用户数据.xls"));
     } catch (IOException e) {
       e.printStackTrace();
     } catch (BiffException e) {
@@ -70,7 +70,7 @@ public class AdminOperation {
 
     List<Project> projects = new ArrayList<>();
     try {
-      workbook = Workbook.getWorkbook(new File("ExcelData/02初始项目数据.xls"));
+      workbook = Workbook.getWorkbook(new File("Excel/02初始项目数据.xls"));
     } catch (IOException e) {
       e.printStackTrace();
     } catch (BiffException e) {
@@ -139,6 +139,9 @@ public class AdminOperation {
 	    for (int index = 1; index < sheet.getRows(); index++) {
 	      Cell cell = sheet.getCell(0, index);
 	      String userID = cell.getContents();
+	      if (userID.equals("")) {
+	    	  continue;
+	      }
 	      
 	      cell = sheet.getCell(1, index);
 	      String userName = cell.getContents();
@@ -176,6 +179,9 @@ public class AdminOperation {
 	    for (int index = 1; index < sheet.getRows(); index++) {
 	      Cell cell = sheet.getCell(0, index);
 	      String userID = cell.getContents();
+	      if (userID.equals("")) {
+	    	  continue;
+	      }
 	      
 	      cell = sheet.getCell(1, index);
 	      String userName = cell.getContents();

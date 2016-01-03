@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -682,15 +683,17 @@ public class enterTripSystem {
 		int month = Integer.parseInt(scanner.next());
 		System.out.println(askForDepartDay);
 		int day = Integer.parseInt(scanner.next());
-		Timestamp departTime = new Timestamp(year, month, day, 0, 0, 0, 0);
+		Date date = new Date(year - 1900, month - 1, day);
+		System.out.println(date);
+		Timestamp departTime = new Timestamp(date.getTime());
 		System.out.println(askForTripDays);
 		int days = Integer.parseInt(scanner.next());
 		System.out.println(askForDetail);
 		String description = scanner.next();
 		Random random = new Random();
 		try {
-			int applicationID = (int) (System.currentTimeMillis() * 1000 + random.nextInt(1000));  
-			int tripID = (int) (System.currentTimeMillis() * 1000 + random.nextInt(1000));
+			int applicationID = (int) (System.currentTimeMillis() * 10 + random.nextInt(10));  
+			int tripID = (int) (System.currentTimeMillis() * 10 + random.nextInt(10));
 			Trip trip = new Trip(tripID, applicationID, departTime, days, description, Trip.UNSTARTED);
 			trip.setTripName(applicationName + "Trip");
 			salesman.createApplication(new Application(applicationID, applicationName, userID, projectID, 
@@ -727,7 +730,7 @@ public class enterTripSystem {
 		int month = Integer.parseInt(scanner.next());
 		System.out.println(askForDepartDay);
 		int day = Integer.parseInt(scanner.next());
-		Timestamp departTime = new Timestamp(year, month, day, 0, 0, 0, 0);
+		Timestamp departTime = new Timestamp(year - 1900, month - 1, day, 0, 0, 0, 0);
 		System.out.println(askForTripDays);
 		int days = Integer.parseInt(scanner.next());
 		System.out.println(askForDetail);

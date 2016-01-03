@@ -144,7 +144,8 @@ public class SalesmanOp {
 				+ application.getState() + ", \n"
 				+ application.getRejectTimes() + ", "
 				+ application.getGroupSize() + ");";
-		DBHelper dbHelper = new DBHelper(url, sql);    	
+		DBHelper dbHelper = new DBHelper(url, sql);  
+//		System.out.println(sql);
 		try {
 			dbHelper.getPst().executeUpdate();			
 			dbHelper.close();
@@ -161,6 +162,7 @@ public class SalesmanOp {
 				+ trip.getTripID() + ", " + trip.getApplicationID() + ", \n"
 				+ "'" + trip.getDepartTime() + "', " + trip.getDays() + ", \n"
 				+ "'" + trip.getDescription() + "', " + trip.getState() + ");\n";
+		System.out.println(sql);
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
