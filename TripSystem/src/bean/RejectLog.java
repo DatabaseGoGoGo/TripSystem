@@ -13,5 +13,8 @@ public class RejectLog {
 		this.rejectTimes = rejectTimes;
 	}
 	
-	
+	@Override
+	public String toString() {
+		
+	}
 }

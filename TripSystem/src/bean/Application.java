@@ -77,6 +77,10 @@ public class Application {
 		return state;
 	}
 	
+	public void setState(int state) {
+		this.state = state;
+	}
+	
 	public int getGroupSize() {
 		return groupSize;
 	}

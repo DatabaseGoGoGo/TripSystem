@@ -13,6 +13,10 @@ public class Project {
 		this.projectDescription = projectDescription;
 	}
 	
+	public Project(int projectID) {
+		this.projectID = projectID;
+	}
+
 	public int getProjectID() {
 		return projectID;
 	}
