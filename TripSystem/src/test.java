@@ -30,7 +30,7 @@ public class test {
 	private static List<Application> generateAppliations(int size) {
 		List<Application> appList = new LinkedList<Application>();
 		for (int i = 0; i < size; i++) {
-			int applicationID = (int) System.currentTimeMillis() * 10000 + random.nextInt(10000);
+			int applicationID = (int) System.currentTimeMillis() * 1000 + random.nextInt(1000);
 			String applicationName = "applyYooo" + random.nextInt(1000);
 			String applyerID = "2015110012";
 			int projectID = 2015120008;
@@ -47,7 +47,7 @@ public class test {
 	private static List<Trip> generateTrip(List<Application> appList) {
 		List<Trip> trips = new LinkedList<Trip>();
 		for (Application app : appList) {
-			int tripID = app.getApplicationID() * 10000 + random.nextInt(10000);
+			int tripID = app.getApplicationID() * 1000 + random.nextInt(1000);
 			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
 			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);

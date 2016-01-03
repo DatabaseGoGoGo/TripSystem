@@ -151,6 +151,7 @@ public class enterTripSystem {
 				default:
 					break;
 			}
+		}
 	}
 	
 	private static void welcome() {
