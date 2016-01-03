@@ -5,14 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import Config.Config;
+
 
 public class DBHelper {
 	private static String driver = "com.mysql.jdbc.Driver";
 	
 	//your username and password
 	private String dbUsername = "root"; 
-//	private String dbPassword = "950720SophiaYj";
-	private String dbPassword = "mm941216";
+	private String dbPassword = Config.getPassword();
 	
 	private Connection connection = null;
 	private PreparedStatement pstatement= null;

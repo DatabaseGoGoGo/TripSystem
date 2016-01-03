@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Config.Config;
 import bean.User;
 
 public class LoginDao {
@@ -15,7 +16,7 @@ public class LoginDao {
 	private String url = "jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8";
 	//sql user information
 	private String dbUsername = "root";
-	private String dbPassword = "950720SophiaYj";
+	private String dbPassword = Config.getPassword();
 	
 	static {
 		  try {
