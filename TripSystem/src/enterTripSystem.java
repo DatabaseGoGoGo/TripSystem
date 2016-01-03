@@ -7,13 +7,21 @@ import bean.User;
 
 public class enterTripSystem {
 	private static Scanner scanner = new Scanner(System.in);
-	/*exit string*/
+	/*Exit string. */
 	private static final String EXIT = "exit";
 	
-	/*login question and information string*/
+	/*Login question and information string. */
 	private static final String askForUserId = "please enter your userID:";
 	private static final String askForPassword = "please enter your password:";
-	private static final String idNotMatchPassword = "Wrong ID or password! PLEASE INPUT THEM AGAIN!";	
+	private static final String idNotMatchPassword = "Wrong ID or password! PLEASE INPUT THEM AGAIN!";
+	
+	/*Operation string of an administrator. */
+	
+	/*Operation string of a salesman. */
+	
+	/*Operation string of a manager. */
+	
+	/*Operation string of a developer. */
 	
 	public static void main(String[] argv) {
 		welcome();
