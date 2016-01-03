@@ -141,7 +141,7 @@ public class enterTripSystem {
 		AdminOperation admin = new AdminOperation(user.getUserID());
 		String command = "";
 		while (scanner.hasNextLine()) {
-			command = scanner.next();
+			command = scanner.nextLine();
 			switch (command) {
 			case addOneUser:
 				addOneNewUser(admin);
@@ -174,7 +174,7 @@ public class enterTripSystem {
 		SalesmanOp salesman = new SalesmanOp(user.getUserID());
 		String command = "";
 		while (scanner.hasNextLine()) {
-			command = scanner.next();
+			command = scanner.nextLine();
 			switch (command) {
 			case showAllApplicationsOfSalesmane:
 				List<Application> apps = salesman.getAllApplications();
@@ -466,7 +466,7 @@ public class enterTripSystem {
 		int state = 0;
 		boolean flag = true;
 		while (flag) {
-			command = scanner.next();
+			command = scanner.nextLine();
 			switch (command) {
 			case HELP:
 				System.out.println(stateOptions);
@@ -540,7 +540,7 @@ public class enterTripSystem {
 	
 	private static void deleteUsers(AdminOperation admin) {
 		System.out.println(askForPath);
-		String filename = scanner.next();
+		String filename = scanner.nextLine();
 		boolean success = admin.deleteUsersByFile(filename);
 		if (success) {
 			System.out.println(successfulUpdate);
@@ -551,7 +551,7 @@ public class enterTripSystem {
 	
 	private static void addUsers(AdminOperation admin) {
 		System.out.println(askForPath);
-		String filename = scanner.next();
+		String filename = scanner.nextLine();
 		boolean success = admin.insertUsersByFile(filename);
 		if (success) {
 			System.out.println(successfulUpdate);
