@@ -94,9 +94,8 @@ public class SalesmanOp {
     		while (result.next()){
     			int rejectID = result.getInt("rejectionID");
     			String rejectReason = result.getString("rejectReason");
-    			int rejectTimes = result.getInt("rejectTimes");
 
-    			log.add(new RejectLog(rejectID, applicationID, rejectReason, rejectTimes));
+    			log.add(new RejectLog(rejectID, applicationID, rejectReason));
     		}
     		result.close();
     		dbHelper.close();
