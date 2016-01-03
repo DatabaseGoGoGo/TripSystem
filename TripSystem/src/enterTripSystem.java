@@ -24,9 +24,17 @@ public class enterTripSystem {
 	/*Operation string of a salesman. */
 	
 	/*Operation string of a manager. */
+	// keyword
+	private static final String show = "show";
+	private static final String search = "search";
 	// input request
-	private static final String viewAllApplicationRequests = "show me all requests";
+	private static final String viewAllApplicationRequests = "show me all trip requests";
+	private static final String searchApplicationByPjName = "search for trip requests by project name";
+	private static final String searchApplicationByState = "search for trip requests by state";
 	// output hint
+	private static final String searchApplicationByPjNameHint = "please enter the key word of the correspond project's name: ";
+	private static final String searchApplicationByStateHint = "please enter the state: ";
+	private static final String noResult = "No result found!"; 
 	
 	/*Operation string of a developer. */
 	
@@ -59,12 +67,19 @@ public class enterTripSystem {
 	
 	private static void ViewOfManager(User user) {
 		ManagerOp managerOp = new ManagerOp(user.getUserID());
-		String command = "";
-		while (scanner.hasNext()){
-			command = scanner.next();
-			switch (command){
-				case viewAllApplicationRequests:
-					viewAllApplicationRequests(managerOp.getAllApplication());
+		String keyword = "";
+		String command = "";		
+		while (scanner.hasNextLine()){
+			keyword = scanner.next();
+			command = keyword + scanner.nextLine();
+//			System.out.println(keyword);
+//			System.out.println(command);
+			switch (keyword){
+				case show:
+					show(managerOp, command);
+					break;
+				case search:
+					search(managerOp, command);
 					break;
 				default:
 					break;
@@ -105,14 +120,45 @@ public class enterTripSystem {
 	
 	/* manager operation */
 	private static void viewApplications(List<Application> applications){
-		for (int i = 0, len = applications.size(); i < len; i++){
-			Application a = applications.get(i);
-			int applicationID = a.getApplicationID();
-			String applicationName = a.getApplicationName();
-			String applyerName = a.getApplyerName();
-			String state = a.getStateName();
-			Timestamp applyTime = a.getApplyTime();
-			System.out.print(applicationID + " ");
+		if (applications.size() == 0 ){
+			printHint(noResult);
 		}
+		for (int i = 0, len = applications.size(); i < len; i++){
+			System.out.println(applications.get(i).toString());
+		}
+	}
+	
+	private static void search(ManagerOp managerOp, String command){
+		switch(command){
+			case searchApplicationByPjName:
+				printHint(searchApplicationByPjNameHint);
+				String pjName = scanner.next();
+				viewApplications(managerOp.getApplicationByProjectName(pjName));
+				break;
+			case searchApplicationByState:
+				printHint(searchApplicationByStateHint);
+				String state = scanner.next();
+				viewApplications(managerOp.getApplicationByState(Integer.parseInt(state)));
+				break;
+			default:
+				break;
+		}
+		
+	}
+	
+	private static void show(ManagerOp managerOp, String command){
+		switch (command){			
+			case viewAllApplicationRequests:
+				System.out.println("1");
+				viewApplications(managerOp.getAllApplication());
+				break;		
+				
+			default:
+				break;
+		}
+	}
+	
+	private static void printHint(String hint){
+		System.out.println(hint);
 	}
 }

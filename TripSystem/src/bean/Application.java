@@ -104,7 +104,7 @@ public class Application {
 	
 	@Override
 	public String toString() {
-		String result = "";
+		String result = "---------------\n";
 		result += "application id: " + applicationID + "\t";
 		result += "application name: " + applicationName + "\n";
 		result += "project id: " + projectID + "\n";
@@ -127,6 +127,7 @@ public class Application {
 			break;
 		}
 		result += "rejected times: " + rejectTimes;
+		result += "\n---------------";
 		return result;		
 	}
 }
