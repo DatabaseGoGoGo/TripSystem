@@ -53,8 +53,8 @@ public class SalesmanOp {
 	public List<Application> getApplicationByState(int state){
 		List<Application> applicationRequests = new LinkedList<Application>();
 		String sql = "select * from application "
-				+ "where state == " + state + " and "
-				+ "userID == '" + salesmanID +"' "
+				+ "where state = " + state + " and "
+				+ "userID = '" + salesmanID +"' "
 				+ "order by applyTime DESC";
 		ResultSet result;
 		DBHelper dbHelper = new DBHelper(url, sql);    	

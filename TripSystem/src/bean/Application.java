@@ -91,4 +91,31 @@ public class Application {
 		}
 		return stateName;
 	}
+	
+	@Override
+	public String toString() {
+		String result = "";
+		result += "application id: " + applicationID + "\t";
+		result += "application name: " + applicationName + "\n";
+		result += "project id: " + projectID + "\n";
+		result += "applyer id: " + applyerID + "\t";
+		result += "apply time: " + applyTime + "\n";
+		result += "state: ";
+		switch (state) {
+		case APPROVED:
+			result += "APPROVED\n";
+			break;
+		case CANCELED:
+			result += "CANCELED\n";
+			break;
+		case REFUSED:
+			result += "REFUSED\n";
+			break;
+		case WAITING:
+			result += "WAITING\n";
+			break;
+		}
+		result += "rejected times: " + rejectTimes;
+		return result;		
+	}
 }

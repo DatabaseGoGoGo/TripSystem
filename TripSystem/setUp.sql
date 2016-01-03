@@ -50,9 +50,10 @@ create table application
    applicationID        decimal not null,
    projectID            decimal not null,
    userID               char(20) not null,
-   applicationName          char(20) not null,
+   applicationName      char(20) not null,
    state                decimal not null,
    applyTime            timestamp,   
+   groupSize            decimal not null,
    rejectTimes          int not null,
    primary key (applicationID)
 );
