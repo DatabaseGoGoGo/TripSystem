@@ -62,4 +62,19 @@ public class Assignment {
 		return stateName;
 	}
 	
+	@Override
+	public String toString() {
+		String result = "-----------------------------------------------------------\n";
+		result += "application id: " + applicationID + "\t";
+		if (applicationName != null)
+			result += "application name: " + applicationName + "\n";
+		for (int i = 0; i < developersAssignedTo.size(); i++){
+			User developer = developersAssignedTo.get(i);
+			result += "developer id: " + developer.getUserID() + "\t";
+			result += "developer name: " + developer.getUserName() + "\t";
+			result += "developer state: " + developerStateName.get(i) + "\n";
+		}
+		result += "\n-----------------------------------------------------------";
+		return result;		
+	}
 }

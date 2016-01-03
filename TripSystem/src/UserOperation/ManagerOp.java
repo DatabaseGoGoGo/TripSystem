@@ -243,7 +243,10 @@ public class ManagerOp {
     	return developers;
 	}
 	
-	public void assignDevelopersToTrip(int applicationID, int[] developers){
+	public boolean assignDevelopersToTrip(int applicationID, String[] developers){
+		if (!checkForGroupSize(applicationID, developers.length)){ // assigned num > request num
+			return false;
+		}
 		for (int i = 0; i < developers.length; i++){
 			String sql = "insert ignore into assign(applicationID, userID, state) "
 					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
@@ -256,6 +259,26 @@ public class ManagerOp {
 			}
 		}
 		startTrip(applicationID);
+		return true;
+	}
+	
+	private boolean checkForGroupSize(int applicationID, int size){
+		int groupSize = 0;
+		String sql = "select groupSize from application "
+					+ "where applicationID = " + applicationID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			groupSize = result.getInt("groupSize");    		
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return size < groupSize;
 	}
 	
 	private void startTrip(int applicationID){
@@ -287,7 +310,8 @@ public class ManagerOp {
 		List<User> developersAssignedTo = new LinkedList<User>();
 		List<Integer> developerState = new LinkedList<Integer>();
 		String sql = "select * from assign, user "
-					+ "where applicationID = " + applicationID;
+					+ "where assign.userID = user.userID and "
+					+ "applicationID = " + applicationID;
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);
     	try {
@@ -304,13 +328,6 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//    	// set userName
-//    	Iterator<User> it = developersAssignedTo.iterator();
-//    	while(it.hasNext()){
-//    		User user = (User)it.next();
-//    		String develpoerName = generalOp.getNameByID(user.getUserID(), "userName", "user");
-//    		user.setUserName(develpoerName);
-//    	}
     	// init assignment
     	Assignment assignment = new Assignment(applicationID);
     	assignment.setDevelopersAssignedTo(developersAssignedTo);
@@ -321,8 +338,9 @@ public class ManagerOp {
 	
 	public List<Trip> getAllTripState(){
 		List<Trip> trips = new LinkedList<Trip>();
-		String sql = "select tripID, applicationID, state from trip "
-					+ "where applicationID in (" 
+		String sql = "select * from trip, application "
+					+ "where trip.applicationID = application.applicationID and "
+					+ "trip.applicationID in (" 
 						+ "select application.applicationID from application "
 						+ "where state = " + APPROVED + " and "
 						+ "application.projectID in ("
@@ -336,8 +354,9 @@ public class ManagerOp {
     		while (result.next()){
     			int tripID = result.getInt("tripID");
     			int applicationID = result.getInt("applicationID");
+    			String applicationName = result.getString("applicationName");
     			int state = result.getInt("state");
-    			trips.add(new Trip(tripID, applicationID, state));
+    			trips.add(new Trip(tripID, applicationID, applicationName, state));
     		}
     		result.close();
     		dbHelper.close();
@@ -368,9 +387,13 @@ public class ManagerOp {
 	 * @return
 	 */
 	public List<TripRecord> getFinishedTripRecord(int tripID){
+		if (!checkTripState(tripID)){
+			return null;
+		}
 		List<TripRecord> records = new LinkedList<TripRecord>();
 		String sql = "select * from tripRecord, user "
-					+ "where tripID = " + tripID;
+					+ "where tripRecord.userID = user.userID and "
+					+ "tripID = " + tripID;
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
     	try {
@@ -389,22 +412,33 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    
-//    	Iterator<TripRecord> it = records.iterator();
-//    	while(it.hasNext()){
-//    		TripRecord record = (TripRecord)it.next();
-//    		String developerName = generalOp.getNameByID(record.getDeveloperID(), "userName", "user");
-//    		record.setDeveloperName(developerName);
-//    	}
     	
 		return records;
 	}
 	
+	private boolean checkTripState(int tripID){
+		int state = -1;
+		String sql = "select state from trip "
+					+ "where tripID = " + tripID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			state = result.getInt("state");
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return state == FINISHED;
+	}
 	// ==============================================
 	// view finished trips' log
 	// ==============================================
 	
-	public void assignDeveloperToProject(int projectID, String userID){
+	public void assignDeveloperToProject(String projectID, String userID){
 		String sql = "insert ignore into develop(projectID, userID) "
 				+ "values("+ projectID + ", '" + userID + "')";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
@@ -413,7 +447,7 @@ public class ManagerOp {
 			dbHelper.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 	
 	public static void main(String[] a){
@@ -430,9 +464,10 @@ public class ManagerOp {
 //		System.out.println(l.size());
 		
 		// setApplicationState
-//		m.setApplicationState(51438896, 1);
+//		m.setApplicationState(1660004646, 0);
+//		m.assignDevelopersToTrip(1660004646, developers);
 		// giveRefusedReason
-//		m.giveRefusedReason(51438896, "~~~~~~~~~~`");
+//		m.giveRefusedReason(1660004646, "~~~~~~~~~~`");
 		
 		
 		// getAllDeveloperByApplicationID
@@ -442,10 +477,22 @@ public class ManagerOp {
 //		}
 //		System.out.println(l.size());
 		// assignDevelopersToTrip(int, int[])
-//		int[] developers = {2015110003, 2015110001, 2015110019};
-//		m.assignDevelopersToTrip(51438896, developers);
+//		String[] developers = {"2015110003", "2015110001", "2015110006"};
+//		m.assignDevelopersToTrip(1660025553, developers);
 		
-
+//		m.assignDeveloperToProject(2015120008, "2015110003");
+//		m.assignDeveloperToProject(2015120008, "2015110006");
+//		m.assignDeveloperToProject(2015120008, "2015110001");
+//		m.assignDeveloperToProject(2015120008, "2015110002");
+		
+		// getAllTripState()
+//		List<Trip> l = m.getAllTripState();
+		// getAssignmentStateByID(1660025553)
+//		Assignment aa = m.getAssignmentStateByID(1660025553);
+//		List<String> l = aa.getDeveloperStateName();
+//		for (int i = 0, len = l.size(); i < len; i++){
+//			System.out.println(l.get(i));
+//		}
 		
 
 	}

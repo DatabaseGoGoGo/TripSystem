@@ -93,6 +93,7 @@ public class DeveloperOp {
     	return assignments;
 	}
 	
+	
 	public void confirmAssigment(int applicationID){
 		String sql = "update assign "
 				+ "set state = " + CONFIRMED + " "
@@ -127,6 +128,8 @@ public class DeveloperOp {
 	public void checkTripState(int tripID, String applicationID){
 		int developerNum = getDeveloperNum(applicationID);
 		int recordNum = getRecordNum(tripID);
+		System.out.println(developerNum);
+		System.out.println(recordNum);
 		if (recordNum == developerNum){
 			String sql = "update trip "
 					+ "set state = " + FINISHED + " "
@@ -187,8 +190,9 @@ public class DeveloperOp {
 	// ==========================================
 	public List<Project> getAllprojects(){
 		List<Project> projects = new LinkedList<Project>();
-		String sql = "select * from project "
-					+ "where projectID in ("
+		String sql = "select * from project, user "
+					+ "where project.userID = user.userID and "
+					+ "projectID in ("
 					+ "select projectID from develop "
 					+ "where userID = '" + developerID + "' )";
     	ResultSet result;
@@ -198,10 +202,11 @@ public class DeveloperOp {
     		while (result.next()){
     			int projectID = result.getInt("projectID");
     			String managerID = result.getString("userID");
+    			String managerName = result.getString("userName");
     			String projectName = result.getString("projectName");
     			String projectDescription = result.getString("projectDescription");  
 
-    			projects.add(new Project(projectID, managerID, projectName, projectDescription));
+    			projects.add(new Project(projectID, managerID, managerName, projectName, projectDescription));
     		}
     		result.close();
     		dbHelper.close();

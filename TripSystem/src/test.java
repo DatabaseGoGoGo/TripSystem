@@ -22,10 +22,6 @@ public class test {
 		checkAllApplication();
 		checkApplicationsOfState(Application.WAITING);
 		
-		ManagerOp managerOp = new ManagerOp("2015110009");
-		managerOp.assignDeveloperToProject(2015120010, "2015110006");
-		managerOp.assignDeveloperToProject(2015120010, "2015110007");
-		managerOp.assignDeveloperToProject(2015120010, "2015110008");
 
 	}
 	
@@ -52,7 +48,7 @@ public class test {
 		List<Trip> trips = new LinkedList<Trip>();
 		for (Application app : appList) {
 			int tripID = app.getApplicationID() * 1000 + random.nextInt(1000);
-			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
+			Trip trip = new Trip(tripID, app.getApplicationID(), "trip", Trip.UNSTARTED);
 			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);
 		}
@@ -63,9 +59,7 @@ public class test {
 		List<Application> allApplication = salesman.getAllApplications();
 		System.out.println("****************All Applications of salesman***************");
 		for (Application app : allApplication) {
-			System.out.println("-----------------------------------------------------------");
 			System.out.println(app.toString());
-			System.out.println("-----------------------------------------------------------");
 		}
 	}
 	
@@ -88,9 +82,7 @@ public class test {
 		}
 		System.out.println("************");
 		for (Application app : applications) {
-			System.out.println("-----------------------------------------------------------");
 			System.out.println(app.toString());
-			System.out.println("-----------------------------------------------------------");
 		}
 	}
 }
