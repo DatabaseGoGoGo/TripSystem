@@ -149,7 +149,7 @@ public class MySqlDao {
 	      statement = connection.createStatement();
 	      String sql = "update user set userName = '" + user.getUserName() + "', "
 	    		  + "password = '" + user.getPassword() + "' "
-	    		  + "where userID = " + user.getUserID() + ";";
+	    		  + "where userID = '" + user.getUserID() + "';";
 	      statement.executeUpdate(sql);
 	    } catch (SQLException e) {
 	      e.printStackTrace();
@@ -272,20 +272,20 @@ public class MySqlDao {
 	        if (userIDs.contains(user.getUserID())) {
 	          continue;
 	        }
-	        String query1 = "delete from user where userID = " + user.getUserID();
+	        String query1 = "delete from user where userID = '" + user.getUserID() +"'";
 	        String query2 = "";
 	        switch (user.getRole()) {
 	        case 0:
-	        	query2 = "delete from admin where userID = " + user.getUserID();
+	        	query2 = "delete from admin where userID = '" + user.getUserID() +"'";
 	        	break;
 	        case 1:
-	        	query2 = "delete from manager where userID = " + user.getUserID();
+	        	query2 = "delete from manager where userID = '" + user.getUserID() +"'";
 	        	break;
 	        case 2:
-	        	query2 = "delete from salesman where userID = " + user.getUserID();
+	        	query2 = "delete from salesman where userID = '" + user.getUserID() +"'";
 	        	break;
 	        case 3:
-	        	query2 = "delete from developer where userID = " + user.getUserID();
+	        	query2 = "delete from developer where userID = '" + user.getUserID() +"'";
 	        	break;
 	        }
 	        statement.addBatch(query1);
@@ -307,6 +307,38 @@ public class MySqlDao {
 	    }
   }
 
+  public void deleteProjects(List<Project> projects) throws SQLException {
+	  Connection connection = null;
+	  Statement statement = null;
+	  try {
+	      connection = DriverManager.getConnection(url, dbUsername, dbPassword);
+	      statement = connection.createStatement();
+	      Set<Integer> projectIDs = new HashSet<>();
+	      String query0 = "set foreign_key_checks = 0";
+	      statement.addBatch(query0);
+	      for (Project project : projects) {
+	        if (projectIDs.contains(project.getProjectID())) {
+	          continue;
+	        }
+	        String query1 = "delete from project where projectID = " + project.getProjectID();
+	        statement.addBatch(query1);
+	        projectIDs.add(project.getProjectID());
+	      }
+	      String query3 = "set foreign_key_checks = 1";
+	      statement.addBatch(query3);
+	      statement.executeBatch();
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    } finally {
+	      if (statement != null) {
+	        statement.close();
+	      }
+	      if (connection != null) {
+	        connection.close();
+	      }
+	    }
+  }
+  
   public void createTable(List<String> querys) throws SQLException {
     Connection connection = null;
     Statement statement = null;

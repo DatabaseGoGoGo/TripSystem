@@ -203,7 +203,7 @@ public class AdminOperation {
 	  Workbook workbook = null;
 	  List<Project> projects = new ArrayList<>();
 	    try {
-	      workbook = Workbook.getWorkbook(new File("ExcelData/02初始项目数据.xls"));
+	      workbook = Workbook.getWorkbook(new File(filename));
 	    } catch (IOException e) {
 	      e.printStackTrace();
 	    } catch (BiffException e) {
@@ -232,6 +232,44 @@ public class AdminOperation {
 	    try {
 	      MySqlDao mySqlDao = MySqlDao.getInstance();
 	      mySqlDao.addProjects(projects);
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+  }
+  
+  public void deleteProjectsByFile(String filename) {
+	  Workbook workbook = null;
+	  List<Project> projects = new ArrayList<>();
+	    try {
+	      workbook = Workbook.getWorkbook(new File(filename));
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    } catch (BiffException e) {
+	      e.printStackTrace();
+	    }
+	    Sheet sheet = workbook.getSheet(0);
+	    for (int row = 1; row < sheet.getRows(); row++) {
+	      Cell cell = sheet.getCell(0, row);
+	      if (cell.getContents().equals("")) {
+	    	break;
+	      }
+	      int projectID = Integer.parseInt(cell.getContents());
+
+	      cell = sheet.getCell(1, row);
+	      String projectName = cell.getContents();
+
+	      cell = sheet.getCell(2, row);
+	      String projectDescription = cell.getContents();
+
+	      cell = sheet.getCell(3, row);
+	      String managerID = cell.getContents();
+
+	      Project project = new Project(projectID, managerID, projectName, projectDescription);
+	      projects.add(project);
+	    }
+	    try {
+	      MySqlDao mySqlDao = MySqlDao.getInstance();
+	      mySqlDao.deleteProjects(projects);
 	    } catch (SQLException e) {
 	      e.printStackTrace();
 	    }

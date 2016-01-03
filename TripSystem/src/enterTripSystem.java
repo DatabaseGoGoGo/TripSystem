@@ -45,6 +45,8 @@ public class enterTripSystem {
 	private static final String exludeUsers = "delete 1+ users";
 	private static final String modifyUser = "modify user";
 	private static final String modifyProject = "modify project";
+	private static final String addProjects = "add 1+ projects";
+	private static final String deleteProjects = "delete 1+ projects";
 	
 	private static final String askForTheUserId = "please input user id";
 	private static final String askForTheUserName = "please input user's new name";
@@ -140,7 +142,7 @@ public class enterTripSystem {
 	private static void ViewOfAdmin(User user) {
 		AdminOperation admin = new AdminOperation(user.getUserID());
 		String command = "";
-		while (scanner.hasNextLine()) {
+		while (true) {
 			command = scanner.nextLine();
 			switch (command) {
 			case addOneUser:
@@ -161,10 +163,18 @@ public class enterTripSystem {
 			case modifyProject:
 				updateProject(admin);
 				break;
+			case addProjects:
+				addProjects(admin);
+				break;
+			case deleteProjects:
+				deleteProjects(admin);
+				break;
 			case EXIT:
 				return;
 			default:
-				System.out.println("Invalid Command! Please Input Again!");
+				if (!command.equals("")){
+					System.out.println("Invalid Command! Please Input Again!");	
+				}
 				break;
 			}
 		}
@@ -173,7 +183,7 @@ public class enterTripSystem {
 	private static void ViewOfSalesman(User user) {
 		SalesmanOp salesman = new SalesmanOp(user.getUserID());
 		String command = "";
-		while (scanner.hasNextLine()) {
+		while (true) {
 			command = scanner.nextLine();
 			switch (command) {
 			case showAllApplicationsOfSalesmane:
@@ -201,7 +211,9 @@ public class enterTripSystem {
 			case EXIT:
 				return;
 			default:
-				System.out.println("Invalid Command! Please Input Again!");
+				if (!command.equals("")){
+					System.out.println("Invalid Command! Please Input Again!");	
+				}
 				break;
 			}
 		}
@@ -558,6 +570,18 @@ public class enterTripSystem {
 		} else {
 			System.out.println(failUpdate);
 		}
+	}
+	
+	private static void deleteProjects(AdminOperation admin) {
+		System.out.println(askForPath);
+		String filename = scanner.nextLine();
+		admin.deleteProjectsByFile(filename);
+	}
+	
+	private static void addProjects(AdminOperation admin) {
+		System.out.println(askForPath);
+		String filename = scanner.nextLine();
+		admin.insertProjectsByFile(filename);
 	}
 	
 	private static void updateUser(AdminOperation admin) {
