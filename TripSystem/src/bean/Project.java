@@ -22,6 +22,17 @@ public class Project {
 		this.projectDescription = projectDescription;
 	}
 	
+	public Project(int projectID, String managerID, String projectName, String projectDescription) {
+		this.projectID = projectID;
+		this.managerID = managerID;
+		this.projectName = projectName;
+		this.projectDescription = projectDescription;
+	}
+	
+	public Project(int projectID) {
+		this.projectID = projectID;
+	}
+
 	public int getProjectID() {
 		return projectID;
 	}

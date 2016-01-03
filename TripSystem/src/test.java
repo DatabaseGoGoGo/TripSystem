@@ -48,7 +48,7 @@ public class test {
 		List<Trip> trips = new LinkedList<Trip>();
 		for (Application app : appList) {
 			int tripID = app.getApplicationID() * 1000 + random.nextInt(1000);
-			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
+			Trip trip = new Trip(tripID, app.getApplicationID(), "trip", Trip.UNSTARTED);
 			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);
 		}

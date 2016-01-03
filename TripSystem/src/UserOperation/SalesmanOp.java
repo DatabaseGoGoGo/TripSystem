@@ -2,14 +2,18 @@ package UserOperation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import dao.DBHelper;
 import bean.Application;
 import bean.Assignment;
 import bean.RejectLog;
+import bean.Project;
 import bean.Trip;
 import Config.Config;
 
@@ -178,6 +182,50 @@ public class SalesmanOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Set<Integer> getProjectIDsByUserID(String userID) {
+		String sql = "select * from sell where userID = '" + userID +"';";
+		ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);   
+    	Set<Integer> projects = new HashSet<Integer>();
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			int projectID = result.getInt("projectID");
+    			projects.add((Integer)projectID);
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return projects;
+	}
+	
+	public Trip getTripByApplicationID(int applicationID) {
+		String sql = "select * from trip where applicationID = " + applicationID +";";
+		ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);   
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		Trip trip = null;
+    		if (result.next()){
+    			int tripID = result.getInt("tripID");
+    			Timestamp departTime = result.getTimestamp("departTime");
+    			int days = result.getInt("days");
+    			String description = result.getString("description");
+    			int state = result.getInt("state");
+    			trip = new Trip(tripID, applicationID, departTime, days, description, state);
+    		}
+    		result.close();
+    		dbHelper.close();
+			return trip;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return null;
 	}
 	
 	private List<Application> sortRequest(List<Application> appList){
