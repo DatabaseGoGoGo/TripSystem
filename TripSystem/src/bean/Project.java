@@ -7,6 +7,13 @@ public class Project {
 	private String projectName;
 	private String projectDescription;
 	
+	public Project(int projectID, String managerID, String projectName, String projectDescription) {
+		this.projectID = projectID;
+		this.managerID = managerID;
+		this.projectName = projectName;
+		this.projectDescription = projectDescription;
+	}
+	
 	public Project(int projectID, String managerID, String managerName, String projectName, String projectDescription) {
 		this.projectID = projectID;
 		this.managerID = managerID;
