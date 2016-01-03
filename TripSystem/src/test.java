@@ -10,9 +10,11 @@ import UserOperation.GeneralOp;
 import UserOperation.ManagerOp;
 import UserOperation.SalesmanOp;
 
-
 public class test {
+	private static SalesmanOp salesman = new SalesmanOp("2015110012");
+	
 	public static void main(String[] argv) {
+
 //		SalesmanOp salesman = new SalesmanOp("2015110012");
 //		List<Application> applications = generateAppliations(12);
 //		List<Trip> trips = generateTrip(applications);
@@ -23,6 +25,7 @@ public class test {
 		managerOp.assignDeveloperToProject(2015120010, "2015110006");
 		managerOp.assignDeveloperToProject(2015120010, "2015110007");
 		managerOp.assignDeveloperToProject(2015120010, "2015110008");
+
 	}
 	
 	static Random random = new Random();
@@ -30,8 +33,8 @@ public class test {
 	private static List<Application> generateAppliations(int size) {
 		List<Application> appList = new LinkedList<Application>();
 		for (int i = 0; i < size; i++) {
-			int applicationID = (int) System.currentTimeMillis();
-			String applicationName = "applyYooo" + random.nextInt(100);
+			int applicationID = (int) System.currentTimeMillis() * 10000 + random.nextInt(10000);
+			String applicationName = "applyYooo" + random.nextInt(1000);
 			String applyerID = "2015110012";
 			int projectID = 2015120008;
 			int state = Application.WAITING;
@@ -44,11 +47,46 @@ public class test {
 	private static List<Trip> generateTrip(List<Application> appList) {
 		List<Trip> trips = new LinkedList<Trip>();
 		for (Application app : appList) {
-			int tripID = app.getApplicationID() * 10 + random.nextInt(9);
+			int tripID = app.getApplicationID() * 10000 + random.nextInt(10000);
 			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
 			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);
 		}
 		return trips;
+	}
+	
+	private static void checkAllApplication() {
+		List<Application> allApplication = salesman.getAllApplications();
+		System.out.println("****************All Applications of salesman***************");
+		for (Application app : allApplication) {
+			System.out.println("-----------------------------------------------------------");
+			System.out.println(app.toString());
+			System.out.println("-----------------------------------------------------------");
+		}
+	}
+	
+	private static void checkApplicationsOfState(int state) {
+		List<Application> applications = salesman.getApplicationByState(state);
+		System.out.print("************* Applications of salesman in the state ");
+		switch (state) {
+		case Application.APPROVED:
+			System.out.print("APPROVED ");
+			break;
+		case Application.CANCELED:
+			System.out.print("CANCELED ");
+			break;
+		case Application.REFUSED:
+			System.out.print("REFUSED ");
+			break;
+		case Application.WAITING:
+			System.out.print("WAITING ");
+			break;
+		}
+		System.out.println("************");
+		for (Application app : applications) {
+			System.out.println("-----------------------------------------------------------");
+			System.out.println(app.toString());
+			System.out.println("-----------------------------------------------------------");
+		}
 	}
 }
