@@ -1,7 +1,11 @@
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Scanner;
 
 import dao.LoginDao;
+import UserOperation.ManagerOp;
+import bean.Application;
 import bean.User;
 
 
@@ -20,6 +24,9 @@ public class enterTripSystem {
 	/*Operation string of a salesman. */
 	
 	/*Operation string of a manager. */
+	// input request
+	private static final String viewAllApplicationRequests = "show me all requests";
+	// output hint
 	
 	/*Operation string of a developer. */
 	
@@ -51,7 +58,19 @@ public class enterTripSystem {
 	}
 	
 	private static void ViewOfManager(User user) {
-		
+		ManagerOp managerOp = new ManagerOp(user.getUserID());
+		String command = "";
+		while (scanner.hasNext()){
+			command = scanner.next();
+			switch (command){
+				case viewAllApplicationRequests:
+					viewAllApplicationRequests(managerOp.getAllApplication());
+					break;
+				default:
+					break;
+			}
+		}
+			
 	}
 	
 	private static void ViewOfDeveloper(User user) {
@@ -82,5 +101,18 @@ public class enterTripSystem {
 		}
 		System.out.println("login successfully!");
 		return user;
+	}
+	
+	/* manager operation */
+	private static void viewApplications(List<Application> applications){
+		for (int i = 0, len = applications.size(); i < len; i++){
+			Application a = applications.get(i);
+			int applicationID = a.getApplicationID();
+			String applicationName = a.getApplicationName();
+			String applyerName = a.getApplyerName();
+			String state = a.getStateName();
+			Timestamp applyTime = a.getApplyTime();
+			System.out.print(applicationID + " ");
+		}
 	}
 }

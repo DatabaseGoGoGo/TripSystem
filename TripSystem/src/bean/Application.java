@@ -17,13 +17,14 @@ public class Application {
 	private Timestamp applyTime;
 	private int rejectTimes;
 	
-	public Application(int applicationID, String applicationName, String applyerID, String applerName, int projectID, int state){
+	public Application(int applicationID, String applicationName, String applyerID, String applerName, int projectID, int state, Timestamp applyTime){
 		this.applicationID = applicationID;
 		this.applicationName = applicationName;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
 		this.applyerName = applerName;
 		this.state = state;
+		this.applyTime = applyTime;
 	}
 	
 	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
@@ -50,13 +51,16 @@ public class Application {
 	public int getApplicationID() {
 		return applicationID;
 	}
+	public String getApplicationName(){
+		return applicationName;
+	}
 	
 	public void setApplyerName(String name){
 		this.applyerName = name;
 	}
 	
-	public String getApplicationName(){
-		return applicationName;
+	public String getApplyerName(){
+		return applyerName;
 	}
 	
 	public String getApplyerID(){

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +61,8 @@ public class ManagerOp {
     			String applyerID = result.getString("userID");
     			String applyerName = result.getString("userName");
     			int state = result.getInt("state");
-    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
+    			Timestamp applyTime = result.getTimestamp("applyTime");
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, applyTime));
     		}
     		result.close();
     		dbHelper.close();
@@ -92,7 +94,8 @@ public class ManagerOp {
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
 				int state = result.getInt("state");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
+				Timestamp applyTime = result.getTimestamp("applyTime");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, applyTime));
 			}
 			result.close();
 			dbHelper.close();
@@ -122,7 +125,8 @@ public class ManagerOp {
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));				
+				Timestamp applyTime = result.getTimestamp("applyTime");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, applyTime));				
 			}
 			result.close();
 			dbHelper.close();
