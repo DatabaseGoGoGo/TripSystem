@@ -1,7 +1,10 @@
 package UserOperation;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import bean.Application;
@@ -72,6 +75,27 @@ public class GeneralOp {
 		}
 		return tripID;
 	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @return date is the format of yyyy-mm-dd
+	 */
+	public String Date2String(Date date){
+		String dateString = date.toString();
+		return dateString;
+	}
+	
+	/**
+	 * @description dateString must be "2010-10-23" format
+	 * @param dateString
+	 * @return
+	 */
+	public Date String2Date(String dateString){
+		Date date = Date.valueOf(dateString);
+		return date;
+	}
+
 	
 	public static void main(String[] a){
 		GeneralOp g = new GeneralOp("jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8");

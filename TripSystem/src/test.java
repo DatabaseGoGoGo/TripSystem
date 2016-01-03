@@ -6,6 +6,8 @@ import java.util.Random;
 
 import bean.Application;
 import bean.Trip;
+import UserOperation.GeneralOp;
+import UserOperation.ManagerOp;
 import UserOperation.SalesmanOp;
 
 public class test {
@@ -19,6 +21,12 @@ public class test {
 		}
 		checkAllApplication();
 		checkApplicationsOfState(Application.WAITING);
+		
+		ManagerOp managerOp = new ManagerOp("2015110009");
+		managerOp.assignDeveloperToProject(2015120010, "2015110006");
+		managerOp.assignDeveloperToProject(2015120010, "2015110007");
+		managerOp.assignDeveloperToProject(2015120010, "2015110008");
+
 	}
 	
 	static Random random = new Random();
@@ -32,7 +40,9 @@ public class test {
 			int projectID = 2015120008;
 			int state = Application.WAITING;
 			int groupSize = random.nextInt(6);
-			Application application = new Application(applicationID, applicationName, applyerID, "…Ú”®", projectID, state, groupSize);
+			Timestamp time = new Timestamp(System.currentTimeMillis());
+			Application application = new Application(applicationID, applicationName, applyerID, "…Ú”®",
+					projectID, state, time, groupSize);
 			appList.add(application);
 		}
 		return appList;

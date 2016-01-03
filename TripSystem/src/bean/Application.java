@@ -1,6 +1,5 @@
 package bean;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Application {
@@ -18,7 +17,8 @@ public class Application {
 	private int rejectTimes;
 	private int groupSize;
 	
-	public Application(int applicationID, String applicationName, String applyerID, String applerName, int projectID, int state, int groupSize){
+	public Application(int applicationID, String applicationName, String applyerID, String applerName, 
+			int projectID, int state, Timestamp applyTime, int groupSize){
 		this.applicationID = applicationID;
 		this.applicationName = applicationName;
 		this.projectID = projectID;
@@ -26,6 +26,7 @@ public class Application {
 		this.applyerName = applerName;
 		this.groupSize = groupSize;
 		this.state = state;
+		this.applyTime = applyTime;
 	}
 	
 	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state, int groupSize){
@@ -52,13 +53,16 @@ public class Application {
 	public int getApplicationID() {
 		return applicationID;
 	}
+	public String getApplicationName(){
+		return applicationName;
+	}
 	
 	public void setApplyerName(String name){
 		this.applyerName = name;
 	}
 	
-	public String getApplicationName(){
-		return applicationName;
+	public String getApplyerName(){
+		return applyerName;
 	}
 	
 	public String getApplyerID(){

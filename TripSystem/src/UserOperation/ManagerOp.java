@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +62,9 @@ public class ManagerOp {
     			String applyerName = result.getString("userName");
     			int state = result.getInt("state");
     			int groupSize = result.getInt("groupSize");
-    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));
+    			Timestamp applyTime = result.getTimestamp("applyTime");
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, 
+    					applyerName, projectID, state, applyTime, groupSize));
     		}
     		result.close();
     		dbHelper.close();
@@ -93,8 +96,10 @@ public class ManagerOp {
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
 				int state = result.getInt("state");
-				int groupSize = result.getInt("groupSize");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));
+    			int groupSize = result.getInt("groupSize");
+    			Timestamp applyTime = result.getTimestamp("applyTime");
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, 
+    					applyerName, projectID, state, applyTime, groupSize));
 			}
 			result.close();
 			dbHelper.close();
@@ -124,8 +129,10 @@ public class ManagerOp {
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
-				int groupSize = result.getInt("groupSize");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));				
+    			int groupSize = result.getInt("groupSize");
+    			Timestamp applyTime = result.getTimestamp("applyTime");
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, 
+    					applyerName, projectID, state, applyTime, groupSize));
 			}
 			result.close();
 			dbHelper.close();
@@ -206,8 +213,8 @@ public class ManagerOp {
 		}		
 	}
 	
-	public List<User> getAllDeveloperByApplicationID(String applicationID){
-		int projectID = generalOp.getProjectIDByApplicationID(applicationID);
+	public List<User> getAllDeveloperByApplicationID(int applicationID){
+		int projectID = generalOp.getProjectIDByApplicationID(applicationID+"");
 		if (projectID == -1){
 			System.out.println("getProjectIDByApplicationID failed");
 			return null;
@@ -236,9 +243,9 @@ public class ManagerOp {
     	return developers;
 	}
 	
-	public void assignDevelopers(int applicationID, int[] developers){
+	public void assignDevelopersToTrip(int applicationID, int[] developers){
 		for (int i = 0; i < developers.length; i++){
-			String sql = "insert into assign(applicationID, userID, state) "
+			String sql = "insert ignore into assign(applicationID, userID, state) "
 					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
 			DBHelper dbHelper = new DBHelper(url, sql);    	
 			try {
@@ -397,6 +404,17 @@ public class ManagerOp {
 	// view finished trips' log
 	// ==============================================
 	
+	public void assignDeveloperToProject(int projectID, String userID){
+		String sql = "insert ignore into develop(projectID, userID) "
+				+ "values("+ projectID + ", '" + userID + "')";
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			dbHelper.getPst().executeUpdate();			
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
 	
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
@@ -417,12 +435,17 @@ public class ManagerOp {
 //		m.giveRefusedReason(51438896, "~~~~~~~~~~`");
 		
 		
-		// getApplicationByState(0)
-//		List<User> l = m.getAllDeveloperByApplicationID(applicationID);
+		// getAllDeveloperByApplicationID
+//		List<User> l = m.getAllDeveloperByApplicationID(51438896);
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getApplicationID());
+//			System.out.println(l.get(i).getUserID());
 //		}
 //		System.out.println(l.size());
+		// assignDevelopersToTrip(int, int[])
+//		int[] developers = {2015110003, 2015110001, 2015110019};
+//		m.assignDevelopersToTrip(51438896, developers);
+		
+
 		
 
 	}

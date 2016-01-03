@@ -96,7 +96,8 @@ public class DeveloperOp {
 	public void confirmAssigment(int applicationID){
 		String sql = "update assign "
 				+ "set state = " + CONFIRMED + " "
-				+ "where applicationID = " + applicationID;
+				+ "where userID = '" + developerID + "' and "
+				+ "applicationID = " + applicationID;
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
@@ -106,10 +107,11 @@ public class DeveloperOp {
 		}
 	}
 	
-	public void handinRecord(int applicationID, String actualDepartTime, String actualTripDays, String tripContent){
-		int tripID = generalOp.getTripIDByApplicationID(applicationID+"");
+	public void handinRecord(String applicationID, String actualDepartTime, String actualTripDays, String tripContent){
+		int tripID = generalOp.getTripIDByApplicationID(applicationID);
+		Date date = generalOp.String2Date(actualDepartTime);
 		List<Assignment> assignments = new LinkedList<Assignment>();
-		String sql = "insert into triprecord(tripID, userID, actualDepartTime, actualTripDays, tripContent) "
+		String sql = "insert ignore into triprecord(tripID, userID, actualDepartTime, actualTripDays, tripContent) "
 				+ "values("+ tripID + ", '" + developerID + "', '" + actualDepartTime + "', " + actualTripDays + ", '" + tripContent + "')";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -122,7 +124,7 @@ public class DeveloperOp {
 		checkTripState(tripID, applicationID);
 	}
 	
-	public void checkTripState(int tripID, int applicationID){
+	public void checkTripState(int tripID, String applicationID){
 		int developerNum = getDeveloperNum(applicationID);
 		int recordNum = getRecordNum(tripID);
 		if (recordNum == developerNum){
@@ -139,9 +141,9 @@ public class DeveloperOp {
 		}
 	}
 	
-	private int getDeveloperNum (int applicationID){
+	private int getDeveloperNum (String applicationID){
 		int developerNum = 0;
-		String sql = "select count(userID) as developerNum "
+		String sql = "select count(userID) as developerNum from assign "
 					+ "where applicationID = " + applicationID + " and "
 					+ "state = " +  CONFIRMED;
     	ResultSet result;
@@ -162,7 +164,7 @@ public class DeveloperOp {
 
 	private int getRecordNum(int tripID){
 		int recordNum = 0;
-		String sql = "select count(userID) as recordNum "
+		String sql = "select count(userID) as recordNum from triprecord "
 					+ "where tripID = " + tripID;
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);
@@ -188,7 +190,7 @@ public class DeveloperOp {
 		String sql = "select * from project "
 					+ "where projectID in ("
 					+ "select projectID from develop "
-					+ "where userID = " + developerID;
+					+ "where userID = '" + developerID + "' )";
     	ResultSet result;
     	DBHelper dbHelper = new DBHelper(url, sql);    	
     	try {
@@ -211,13 +213,27 @@ public class DeveloperOp {
 	}
 	
 	public static void main(String[] a){
+		GeneralOp generalOp = new GeneralOp("jdbc:mysql://127.0.0.1:3306/trip?useUnicode=true&amp;characterEncoding=UTF-8&amp;");
 		DeveloperOp d = new DeveloperOp("2015110003");
-		List<Assignment> l = d.getUnconfirmedAssignments();
+		// getUnconfirmedAssignments
+//		List<Assignment> l = d.getUnconfirmedAssignments();
+		// getConfirmedAssignments
+//		List<Assignment> l = d.getConfirmedAssignments();
 //		for (int i = 0, len = l.size(); i < len; i++){
-//			System.out.println(l.get(i).getApplicationName());
+//			System.out.println(l.get(i).getApplicationID());
 //		}
 		
+		// confirmAssigment
+//		d.confirmAssigment(51438896);
+		
+//		d.handinRecord(51438896+"", "2020-01-20", "10", "1ffff!~~~");
+		
 
+		// getConfirmedAssignments
+		List<Project> l = d.getAllprojects();
+		for (int i = 0, len = l.size(); i < len; i++){
+			System.out.println(l.get(i).getProjectID());
+		}
 	}
 
 }
