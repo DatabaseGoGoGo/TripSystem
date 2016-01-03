@@ -125,7 +125,7 @@ public class AdminOperation {
     return sqlList;
   }
   
-  public void insertUsersByFile(String filename) {
+  public boolean insertUsersByFile(String filename) {
 	  Workbook workbook = null;
 	    try {
 	      workbook = Workbook.getWorkbook(new File(filename));
@@ -155,8 +155,47 @@ public class AdminOperation {
 	  try {
 		  MySqlDao mySqlDao = MySqlDao.getInstance();
 		  mySqlDao.addUsers(users);
+		  return true;
 	  } catch (SQLException e) {
 		  e.printStackTrace();
+		  return false;
+	  }
+  }
+  
+  public boolean deleteUsersByFile(String filename) {
+	  Workbook workbook = null;
+	    try {
+	      workbook = Workbook.getWorkbook(new File(filename));
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    } catch (BiffException e) {
+	      e.printStackTrace();
+	    }
+	    Sheet sheet = workbook.getSheet(0);
+	    List<User> users = new ArrayList<>();
+	    for (int index = 1; index < sheet.getRows(); index++) {
+	      Cell cell = sheet.getCell(0, index);
+	      String userID = cell.getContents();
+	      
+	      cell = sheet.getCell(1, index);
+	      String userName = cell.getContents();
+	      
+	      cell = sheet.getCell(2, index);
+	      String password = cell.getContents();
+	      
+	      cell = sheet.getCell(3, index);
+	      String role = cell.getContents();
+	      
+	      User user = new User(userID, userName, password, role);
+	      users.add(user);
+	    }
+	  try {
+		  MySqlDao mySqlDao = MySqlDao.getInstance();
+		  mySqlDao.deleteUsers(users);
+		  return true;
+	  } catch (SQLException e) {
+		  e.printStackTrace();
+		  return false;
 	  }
   }
   
@@ -198,34 +237,40 @@ public class AdminOperation {
 	    }
   }
   
-  public void insertOneUser(User user) {
+  public boolean insertOneUser(User user) {
 	  List<User> users = new LinkedList<User>();
 	  users.add(user);
 	  try {
 	    MySqlDao mySqlDao = MySqlDao.getInstance();;
 		mySqlDao.addUsers(users);
+		return true;
 	    } catch (SQLException e) {
 	      e.printStackTrace();
+	      return false;
 	   }
   }
   
-  public void deleteOneUser(User user) {
+  public boolean deleteOneUser(User user) {
 	  List<User> users = new LinkedList<User>();
 	  users.add(user);
 	  try {
 		  MySqlDao mySqlDao = MySqlDao.getInstance();;
 		  mySqlDao.deleteUsers(users);
+		  return true;
 	  } catch (SQLException e) {
 		  e.printStackTrace();
+		  return false;
 	  }
   }
   
-  public void updateProject(Project project) {
+  public boolean updateProject(Project project) {
 	  try {
 		  MySqlDao mySqlDao = MySqlDao.getInstance();;
 		  mySqlDao.updateProject(project);
+		  return true;
 	  } catch (SQLException e) {
 		  e.printStackTrace();
+		  return false;
 	  }
   }
   
