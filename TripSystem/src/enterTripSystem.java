@@ -738,6 +738,9 @@ public class enterTripSystem {
 			return;
 		}
 		List<RejectLog> log = salesman.getRejectLogs(applicationID);
-		
+		System.out.println("****************Reject Log of this application***************");
+		for (RejectLog rejectItem : log) {
+			System.out.println(rejectItem.toString());
+		}
 	}
 }
