@@ -99,6 +99,7 @@ public class enterTripSystem {
 	private static final String viewAllAssignmentState = "show me all assignmnet state";
 	private static final String viewAllTripState = "show me all trip state";
 	private static final String viewAllTripRecord = "show me all trip records";
+	private static final String viewAllRejectRecord = "show me all reject records";
 	// output hint
 	private static final String searchApplicationByPjNameHint = "please enter the key word of the correspond project's name: ";
 	private static final String searchApplicationByStateHint = "please enter the state: ";
@@ -340,6 +341,8 @@ public class enterTripSystem {
 				break;
 			case viewAllTripRecord:
 				viewTripRecord(managerOp);
+			case viewAllRejectRecord:
+				viewAllRejectLog(managerOp);
 			default:
 				break;
 		}
@@ -384,6 +387,12 @@ public class enterTripSystem {
 		viewTripRecord(managerOp.getFinishedTripRecord(tripID));
 	}
 
+	private static void viewAllRejectLog(ManagerOp managerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		viewRejectLog(managerOp.getRejectLog(applicationID));
+	}
+	
 	private static void assignDevelopersToPj(ManagerOp managerOp){
 		printHint(assignDevelopersToPjHint);
 		String[] info = splitToken(scanner.nextLine(), ", ");
@@ -421,6 +430,19 @@ public class enterTripSystem {
 		}
 		for (int i = 0, len = triprecord.size(); i < len; i++){
 			System.out.println(triprecord.get(i).toString());
+		}
+	}
+	
+	private static void viewRejectLog(List<RejectLog> rejectlog){
+		if (rejectlog == null){
+			System.out.println("This application is not rejected!");
+			return;
+		}
+		if (rejectlog.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = rejectlog.size(); i < len; i++){
+			System.out.println(rejectlog.get(i).toString());
 		}
 	}
 	
