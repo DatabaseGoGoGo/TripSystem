@@ -128,6 +128,8 @@ public class DeveloperOp {
 	public void checkTripState(int tripID, String applicationID){
 		int developerNum = getDeveloperNum(applicationID);
 		int recordNum = getRecordNum(tripID);
+		System.out.println(developerNum);
+		System.out.println(recordNum);
 		if (recordNum == developerNum){
 			String sql = "update trip "
 					+ "set state = " + FINISHED + " "

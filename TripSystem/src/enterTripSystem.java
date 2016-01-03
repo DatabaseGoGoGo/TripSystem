@@ -71,7 +71,7 @@ public class enterTripSystem {
 	private static final String handinRecord = "hand in record";
 	private static final String viewResponsiblePj = "show me the project I responsible for";
 	// output hint
-	private static final String enterTripRecordHint = "please enter the trip record in the following format: (e.g. actualDepartTime, actualTripDays, tripContent";
+	private static final String enterTripRecordHint = "please enter the trip record in the following format: (e.g. actualDepartTime, actualTripDays, tripContent)\nHint: actualDepartTime shoud be yyyy-mm-dd format!!!";
 	
 	public static void main(String[] argv) {
 		welcome();
@@ -123,6 +123,9 @@ public class enterTripSystem {
 				case assign:
 					assignDevelopersToPj(managerOp);
 					break;
+				case EXIT:
+					System.out.println("see you~");
+					System.exit(0);
 				default:
 					break;
 			}
@@ -150,6 +153,10 @@ public class enterTripSystem {
 					break;
 				case viewResponsiblePj:
 					viewProject(developerOp.getAllprojects());
+					break;
+				case EXIT:
+					System.out.println("see you~");
+					System.exit(0);
 				default:
 					break;
 			}
@@ -224,13 +231,15 @@ public class enterTripSystem {
 		int applicationID = scanner.nextInt();
 		managerOp.setApplicationState(applicationID, APPROVED);
 		printHint(assignDevelopersHint);
+		scanner.nextLine();
 		String[] developers = splitToken(scanner.nextLine(), ", ");
 		while(!managerOp.assignDevelopersToTrip(applicationID, developers)){
 			System.out.println("Assigned failed! check if the number of assigned developers exceeds");
 			printHint(assignDevelopersHint);
+			scanner.nextLine();
 			developers = splitToken(scanner.nextLine(), ", ");
 		}
-		System.out.println("Assigned successfully");
+		System.out.println("Assigned successfully");// 1660026822
 	}
 	
 	private static void rejectApplication(ManagerOp managerOp){
@@ -240,6 +249,7 @@ public class enterTripSystem {
 		printHint(enterRejectReasonHint);
 		String reason = scanner.nextLine();
 		managerOp.giveRefusedReason(applicationID, reason);
+		System.out.println("rejected successfully!");
 	}
 	
 	private static void viewAllAssignmentState(ManagerOp managerOp){
@@ -281,6 +291,10 @@ public class enterTripSystem {
 	}
 	
 	private static void viewTripRecord(List<TripRecord> triprecord){
+		if (triprecord == null){
+			System.out.println("This trip is not finished yet!");
+			return;
+		}
 		if (triprecord.size() == 0 ){
 			printHint(noResult);
 		}
@@ -319,6 +333,7 @@ public class enterTripSystem {
 		printHint(enterApplicationIDHint);
 		int applicationID = scanner.nextInt();
 		printHint(enterTripRecordHint);
+		scanner.nextLine();
 		String[] info = splitToken(scanner.nextLine(), ", ");
 		developerOp.handinRecord(applicationID+"", info[0], info[1], info[2]);
 		System.out.println("handed successfully!");
@@ -329,7 +344,7 @@ public class enterTripSystem {
 	}
 	
 	private static String[] splitToken(String line, String token){
-		String[] arry = line.split(token);
+		String[] arry = line.split(token+"|\n");
 		return arry;
 	}
 }

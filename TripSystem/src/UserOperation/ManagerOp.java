@@ -328,13 +328,6 @@ public class ManagerOp {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//    	// set userName
-//    	Iterator<User> it = developersAssignedTo.iterator();
-//    	while(it.hasNext()){
-//    		User user = (User)it.next();
-//    		String develpoerName = generalOp.getNameByID(user.getUserID(), "userName", "user");
-//    		user.setUserName(develpoerName);
-//    	}
     	// init assignment
     	Assignment assignment = new Assignment(applicationID);
     	assignment.setDevelopersAssignedTo(developersAssignedTo);
@@ -345,9 +338,9 @@ public class ManagerOp {
 	
 	public List<Trip> getAllTripState(){
 		List<Trip> trips = new LinkedList<Trip>();
-		String sql = "select tripID, applicationID, state from trip, application "
+		String sql = "select * from trip, application "
 					+ "where trip.applicationID = application.applicationID and "
-					+ "applicationID in (" 
+					+ "trip.applicationID in (" 
 						+ "select application.applicationID from application "
 						+ "where state = " + APPROVED + " and "
 						+ "application.projectID in ("

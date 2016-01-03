@@ -66,7 +66,8 @@ public class Assignment {
 	public String toString() {
 		String result = "-----------------------------------------------------------\n";
 		result += "application id: " + applicationID + "\t";
-		result += "application name: " + applicationName + "\n";
+		if (applicationName != null)
+			result += "application name: " + applicationName + "\n";
 		for (int i = 0; i < developersAssignedTo.size(); i++){
 			User developer = developersAssignedTo.get(i);
 			result += "developer id: " + developer.getUserID() + "\t";
