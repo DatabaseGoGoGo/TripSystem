@@ -102,7 +102,7 @@ public class MySqlDao {
         String query = String.format(
             "insert project(projectID, userID, projectName, projectDescription) values(%d, (%s), '%s', '%s')", 
             project.getProjectID(), 
-            "select userID from manager where userID='" + project.getManagerID() +"'",
+            "'" + project.getManagerID() +"'",
             project.getProjectName(), project.getProjectDescription());
         statement.addBatch(query);
       }

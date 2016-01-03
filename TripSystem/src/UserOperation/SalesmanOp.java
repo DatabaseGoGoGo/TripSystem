@@ -107,10 +107,10 @@ public class SalesmanOp {
 	}
 	
 	public void updateTrip(Trip trip) {
-		String sql = "update trip"
-				+ "set departTime = " + trip.getDepartTime() +", "
-				+ "days = " + trip.getDays() + ", "
-				+ "description = " + trip.getDescription() + ", "
+		String sql = "update trip "
+				+ "set departTime = '" + trip.getDepartTime() +"', \n"
+				+ "days = " + trip.getDays() + ", \n"
+				+ "description = '" + trip.getDescription() + "', \n"
 				+ "state = " + trip.getState() + ";";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -123,7 +123,10 @@ public class SalesmanOp {
 	
 	public void updateApplication(Application application) {
 		String sql = "update application "
-				+ "set applyTime = " + application.getApplyTime() + " "
+				+ "set applyTime = " + application.getApplyTime() + ", "
+				+ "state = " + application.getState() + ", "
+				+ "applicationName = '" + application.getApplicationName() + "', " 
+				+ "groupSize = " + application.getGroupSize() + " "
 				+ "where applicationID = " + application.getApplicationID() + ";";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {

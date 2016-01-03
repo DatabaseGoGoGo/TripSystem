@@ -11,12 +11,12 @@ import UserOperation.ManagerOp;
 import UserOperation.SalesmanOp;
 
 public class test {
-	private static SalesmanOp salesman = new SalesmanOp("2015110012");
+	private static SalesmanOp salesman = new SalesmanOp("2015110005");
 	
 	public static void main(String[] argv) {
-		List<Application> applications = generateAppliations(12);
+		List<Application> applications = generateAppliations(3);
 		List<Trip> trips = generateTrip(applications);
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 3 ; i++) {
 			salesman.createApplication(applications.get(i), trips.get(i));
 		}
 		checkAllApplication();
@@ -30,10 +30,10 @@ public class test {
 	private static List<Application> generateAppliations(int size) {
 		List<Application> appList = new LinkedList<Application>();
 		for (int i = 0; i < size; i++) {
-			int applicationID = (int) System.currentTimeMillis() * 1000 + random.nextInt(1000);
-			String applicationName = "applyYooo" + random.nextInt(1000);
-			String applyerID = "2015110012";
-			int projectID = 2015120008;
+			int applicationID = (int) System.currentTimeMillis() * 10 + random.nextInt(10);
+			String applicationName = "applyYooo" + random.nextInt(10);
+			String applyerID = "2015110005";
+			int projectID = 2015120007;
 			int state = Application.WAITING;
 			int groupSize = random.nextInt(6);
 			Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -47,7 +47,7 @@ public class test {
 	private static List<Trip> generateTrip(List<Application> appList) {
 		List<Trip> trips = new LinkedList<Trip>();
 		for (Application app : appList) {
-			int tripID = app.getApplicationID() * 1000 + random.nextInt(1000);
+			int tripID = app.getApplicationID() * 10 + random.nextInt(10);
 			Trip trip = new Trip(tripID, app.getApplicationID(), "trip", Trip.UNSTARTED);
 			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);

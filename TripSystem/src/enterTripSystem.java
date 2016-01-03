@@ -90,17 +90,17 @@ public class enterTripSystem {
 	private static final String approve = "approve";
 	private static final String reject = "reject";
 	private static final String assign = "assign";
-	// input request
+	// input request  // 
 	private static final String viewAllApplicationRequests = "show me all trip requests";
 	private static final String searchApplicationByPjName = "search for trip requests by project name";
-	private static final String searchApplicationByState = "search for trip requests by state";
+	private static final String searchApplicationByState = "search for trip requests by state\n(0 for APPROVED, 1 for REFUSED, 2 for WAITING, 3 for CANCELED)";
 	private static final String approveApplication = "approve application";
 	private static final String assignDevelopersToPj = "assign developers to project";
 	private static final String rejectApplication = "reject application";
 	private static final String viewAllAssignmentState = "show me all assignmnet state";
 	private static final String viewAllTripState = "show me all trip state";
 	private static final String viewAllTripRecord = "show me all trip records";
-	private static final String viewAllRejectRecord = "show me all reject records";
+	private static final String viewAllRejectRecord = "show me all reject records"; // 1161497381
 	// output hint
 	private static final String searchApplicationByPjNameHint = "please enter the key word of the correspond project's name: ";
 	private static final String searchApplicationByStateHint = "please enter the state: ";
@@ -248,6 +248,7 @@ public class enterTripSystem {
 					System.out.println("see you~");
 					System.exit(0);
 				default:
+					System.out.println("Invaild operation");
 					break;
 			}
 		}
@@ -279,6 +280,7 @@ public class enterTripSystem {
 					System.out.println("see you~");
 					System.exit(0);
 				default:
+					System.out.println("Invaild operation");
 					break;
 			}
 		}
@@ -370,6 +372,7 @@ public class enterTripSystem {
 		int applicationID = scanner.nextInt();
 		managerOp.setApplicationState(applicationID, REFUSED);
 		printHint(enterRejectReasonHint);
+		scanner.nextLine();
 		String reason = scanner.nextLine();
 		managerOp.giveRefusedReason(applicationID, reason);
 		System.out.println("rejected successfully!");
@@ -397,7 +400,7 @@ public class enterTripSystem {
 	private static void assignDevelopersToPj(ManagerOp managerOp){
 		printHint(assignDevelopersToPjHint);
 		String[] info = splitToken(scanner.nextLine(), ", ");
-		managerOp.assignDeveloperToProject(info[1], info[2]);
+		managerOp.assignDeveloperToProject(info[1], info[0]);
 		System.out.println("assigned successfully");
 	}
 	
