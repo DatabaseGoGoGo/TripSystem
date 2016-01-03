@@ -235,7 +235,7 @@ public class ManagerOp {
 	
 	public void assignDevelopersToTrip(int applicationID, int[] developers){
 		for (int i = 0; i < developers.length; i++){
-			String sql = "insert into assign(applicationID, userID, state) "
+			String sql = "insert ignore into assign(applicationID, userID, state) "
 					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
 			DBHelper dbHelper = new DBHelper(url, sql);    	
 			try {
@@ -395,7 +395,7 @@ public class ManagerOp {
 	// ==============================================
 	
 	public void assignDeveloperToProject(int projectID, String userID){
-		String sql = "insert into develop(projectID, userID) "
+		String sql = "insert ignore into develop(projectID, userID) "
 				+ "values("+ projectID + ", '" + userID + "')";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
@@ -432,8 +432,8 @@ public class ManagerOp {
 //		}
 //		System.out.println(l.size());
 		// assignDevelopersToTrip(int, int[])
-		int[] developers = {2015110003, 2015110001, 2015110019};
-		m.assignDevelopersToTrip(51438896, developers);
+//		int[] developers = {2015110003, 2015110001, 2015110019};
+//		m.assignDevelopersToTrip(51438896, developers);
 		
 
 		
