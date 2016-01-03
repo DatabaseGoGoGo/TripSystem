@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.LoginDao;
+import UserOperation.AdminOperation;
 import UserOperation.ManagerOp;
+import UserOperation.SalesmanOp;
 import bean.Application;
 import bean.User;
 
@@ -20,8 +22,19 @@ public class enterTripSystem {
 	private static final String idNotMatchPassword = "Wrong ID or password! PLEASE INPUT THEM AGAIN!";
 	
 	/*Operation string of an administrator. */
+	private static final String addOneUser = "add one user";
+	private static final String importUsers = "add 1+ users";
+	private static final String deleteOneUser = "delete one user";
+	private static final String exludeUsers = "delete 1+ users";
+	private static final String modifyUser = "modify user";
+	private static final String modifyProject = "modify project";
 	
 	/*Operation string of a salesman. */
+	private static final String showAllApplicationsOfSalesmane = "show applications";
+	private static final String showApplicationInSpecificStateOfSalesman = "show applications in state";
+	private static final String createNewApplication = "create new application";
+	private static final String modifyApplication = "modify application";
+	private static final String cancelApplication = "cancel application";
 	
 	/*Operation string of a manager. */
 	// input request
@@ -47,14 +60,57 @@ public class enterTripSystem {
         	ViewOfDeveloper(user);
         	break;
         }
+        System.out.println("Bye bye~");
 	}
 	
 	private static void ViewOfAdmin(User user) {
-		
+		AdminOperation admin = new AdminOperation(user.getUserID());
+		String command = "";
+		while (scanner.hasNext()) {
+			command = scanner.next();
+			switch (command) {
+			case addOneUser:
+				
+				break;
+			case importUsers:
+				break;
+			case deleteOneUser:
+				break;
+			case exludeUsers:
+				break;
+			case modifyUser:
+				break;
+			case modifyProject:
+				break;
+			case EXIT:
+				return;
+			default:
+				System.out.println("Invalid Command! Please Input Again!");
+				break;
+			}
+		}
 	}
 	
 	private static void ViewOfSalesman(User user) {
-		
+		SalesmanOp salesman = new SalesmanOp(user.getUserID());
+		String command = "";
+		while (scanner.hasNext()) {
+			command = scanner.next();
+			switch (command) {
+			case showAllApplicationsOfSalesmane:
+				
+				break;
+			case showApplicationInSpecificStateOfSalesman:
+				break;
+			case createNewApplication:
+				break;
+			case cancelApplication:
+				break;
+			default:
+				System.out.println("Invalid Command! Please Input Again!");
+				break;
+			}
+		}
 	}
 	
 	private static void ViewOfManager(User user) {
@@ -64,7 +120,7 @@ public class enterTripSystem {
 			command = scanner.next();
 			switch (command){
 				case viewAllApplicationRequests:
-					viewAllApplicationRequests(managerOp.getAllApplication());
+//					viewAllApplicationRequests(managerOp.getAllApplication());
 					break;
 				default:
 					break;
