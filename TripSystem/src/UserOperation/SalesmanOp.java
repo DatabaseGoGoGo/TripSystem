@@ -40,7 +40,8 @@ public class SalesmanOp {
 				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
 				int state = result.getInt("state");
-				myApplications.add(new Application(applicationID, applicationName, salesmanID, projectID, state));				
+				int groupSize = result.getInt("groupSize");
+				myApplications.add(new Application(applicationID, applicationName, salesmanID, projectID, state, groupSize));				
 			}
 			result.close();
 			dbHelper.close();
@@ -64,8 +65,9 @@ public class SalesmanOp {
 				int applicationID = result.getInt("applicationID");
 				String applicationName = result.getString("applicationName");
 				int projectID = result.getInt("projectID");
-				String applyerID = result.getString("applyerID");	
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state));				
+				String applyerID = result.getString("userID");	
+				int groupSize = result.getInt("groupSize");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, projectID, state, groupSize));				
 			}
 			result.close();
 			dbHelper.close();
@@ -131,13 +133,14 @@ public class SalesmanOp {
 	
 	public void createApplication(Application application, Trip trip) {
 		String sql = "insert into application(applicationID, projectID, userID, \n"
-				+ "applicationName, state, rejectTimes) \n"
+				+ "applicationName, state, rejectTimes, groupSize) \n"
 				+ "values(" + application.getApplicationID() + ", \n"
 				+ application.getProjectID() + ", \n"
 				+ "'" + salesmanID + "', \n"
 				+ "'" + application.getApplicationName() + "', \n"
 				+ application.getState() + ", \n"
-				+ application.getRejectTimes() + ");";
+				+ application.getRejectTimes() + ", "
+				+ application.getGroupSize() + ");";
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			

@@ -12,11 +12,11 @@ public class test {
 	private static SalesmanOp salesman = new SalesmanOp("2015110012");
 	
 	public static void main(String[] argv) {
-//		List<Application> applications = generateAppliations(12);
-//		List<Trip> trips = generateTrip(applications);
-//		for (int i = 0; i < 12; i++) {
-//			salesman.createApplication(applications.get(i), trips.get(i));
-//		}
+		List<Application> applications = generateAppliations(12);
+		List<Trip> trips = generateTrip(applications);
+		for (int i = 0; i < 12; i++) {
+			salesman.createApplication(applications.get(i), trips.get(i));
+		}
 		checkAllApplication();
 		checkApplicationsOfState(Application.WAITING);
 	}
@@ -31,7 +31,8 @@ public class test {
 			String applyerID = "2015110012";
 			int projectID = 2015120008;
 			int state = Application.WAITING;
-			Application application = new Application(applicationID, applicationName, applyerID, projectID, state);
+			int groupSize = random.nextInt(6);
+			Application application = new Application(applicationID, applicationName, applyerID, "ÉòÓ¨", projectID, state, groupSize);
 			appList.add(application);
 		}
 		return appList;
@@ -60,7 +61,7 @@ public class test {
 	
 	private static void checkApplicationsOfState(int state) {
 		List<Application> applications = salesman.getApplicationByState(state);
-		System.out.print("************* Applications of salesman in the state ");
+		System.out.print("************* Applications of salesman in the state of ");
 		switch (state) {
 		case Application.APPROVED:
 			System.out.print("APPROVED ");

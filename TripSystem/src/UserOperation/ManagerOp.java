@@ -60,7 +60,8 @@ public class ManagerOp {
     			String applyerID = result.getString("userID");
     			String applyerName = result.getString("userName");
     			int state = result.getInt("state");
-    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
+    			int groupSize = result.getInt("groupSize");
+    			applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));
     		}
     		result.close();
     		dbHelper.close();
@@ -92,7 +93,8 @@ public class ManagerOp {
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
 				int state = result.getInt("state");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));
+				int groupSize = result.getInt("groupSize");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));
 			}
 			result.close();
 			dbHelper.close();
@@ -122,7 +124,8 @@ public class ManagerOp {
 				int projectID = result.getInt("projectID");
 				String applyerID = result.getString("userID");
 				String applyerName = result.getString("userName");
-				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state));				
+				int groupSize = result.getInt("groupSize");
+				applicationRequests.add(new Application(applicationID, applicationName, applyerID, applyerName, projectID, state, groupSize));				
 			}
 			result.close();
 			dbHelper.close();

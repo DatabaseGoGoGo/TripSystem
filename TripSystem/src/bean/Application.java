@@ -16,24 +16,26 @@ public class Application {
 	private String applyerName;
 	private Timestamp applyTime;
 	private int rejectTimes;
+	private int groupSize;
 	
-	public Application(int applicationID, String applicationName, String applyerID, String applerName, int projectID, int state){
+	public Application(int applicationID, String applicationName, String applyerID, String applerName, int projectID, int state, int groupSize){
 		this.applicationID = applicationID;
 		this.applicationName = applicationName;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
 		this.applyerName = applerName;
+		this.groupSize = groupSize;
 		this.state = state;
 	}
 	
-	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state){
+	public Application(int applicationID, String applicationName, String applyerID, int projectID, int state, int groupSize){
 		this.applicationID = applicationID;
 		this.applicationName = applicationName;
 		this.projectID = projectID;
 		this.applyerID = applyerID;
+		this.groupSize = groupSize;
 		this.state = state;
-	}
-	
+	}	
 
 	public Timestamp getApplyTime() {
 		return applyTime;
@@ -71,6 +73,10 @@ public class Application {
 		return state;
 	}
 	
+	public int getGroupSize() {
+		return groupSize;
+	}
+	
 	public String getStateName(){
 		String stateName = "";
 		switch (state){
@@ -98,8 +104,9 @@ public class Application {
 		result += "application id: " + applicationID + "\t";
 		result += "application name: " + applicationName + "\n";
 		result += "project id: " + projectID + "\n";
-		result += "applyer id: " + applyerID + "\t";
+		result += "applyer: " + applyerID + " " + applyerName + "\t";
 		result += "apply time: " + applyTime + "\n";
+		result += "group size: " + groupSize + "\n";
 		result += "state: ";
 		switch (state) {
 		case APPROVED:
