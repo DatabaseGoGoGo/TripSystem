@@ -162,7 +162,6 @@ public class SalesmanOp {
 				+ trip.getTripID() + ", " + trip.getApplicationID() + ", \n"
 				+ "'" + trip.getDepartTime() + "', " + trip.getDays() + ", \n"
 				+ "'" + trip.getDescription() + "', " + trip.getState() + ");\n";
-		System.out.println(sql);
 		DBHelper dbHelper = new DBHelper(url, sql);    	
 		try {
 			dbHelper.getPst().executeUpdate();			
