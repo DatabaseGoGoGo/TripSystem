@@ -1,6 +1,11 @@
 package bean;
 
 public class User {
+	public static final int ADMIN = 0;
+	public static final int MANAGER = 1;
+	public static final int SALESMAN = 2;
+	public static final int DEVELOPER = 3;
+	
 	/**
 	 * user's information
 	 */

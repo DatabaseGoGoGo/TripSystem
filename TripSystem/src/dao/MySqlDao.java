@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import Config.Config;
 import bean.Project;
 import bean.User;
 
@@ -22,8 +23,7 @@ public class MySqlDao {
   private String url = "jdbc:mysql://localhost:3306/trip?useUnicode=true&characterEncoding=UTF-8";
   //sql user information
   private String dbUsername = "root";
-//  private String dbPassword = "950720SophiaYj";
-  private String dbPassword = "mm941216";
+  private String dbPassword = Config.getPassword();
 
   private MySqlDao() {}
 

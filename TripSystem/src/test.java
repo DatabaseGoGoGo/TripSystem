@@ -46,7 +46,7 @@ public class test {
 		for (Application app : appList) {
 			int tripID = app.getApplicationID() * 10 + random.nextInt(9);
 			Trip trip = new Trip(tripID, app.getApplicationID(), Trip.UNSTARTED);
-			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+1000000));
+			trip.setDepartTime(new Timestamp(System.currentTimeMillis()+700000000));
 			trips.add(trip);
 		}
 		return trips;
