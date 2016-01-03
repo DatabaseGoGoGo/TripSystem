@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.LoginDao;
+import UserOperation.DeveloperOp;
 import UserOperation.ManagerOp;
 import bean.Application;
+import bean.Assignment;
+import bean.Trip;
+import bean.TripRecord;
 import bean.User;
 
 
@@ -36,13 +40,17 @@ public class enterTripSystem {
 	private static final String search = "search";
 	private static final String approve = "approve";
 	private static final String reject = "reject";
+	private static final String assign = "assign";
 	// input request
 	private static final String viewAllApplicationRequests = "show me all trip requests";
 	private static final String searchApplicationByPjName = "search for trip requests by project name";
 	private static final String searchApplicationByState = "search for trip requests by state";
 	private static final String approveApplication = "approve application";
+	private static final String assignDevelopersToPj = "assign developers to project";
 	private static final String rejectApplication = "reject application";
+	private static final String viewAllAssignmentState = "show me all assignmnet state";
 	private static final String viewAllTripState = "show me all trip state";
+	private static final String viewAllTripRecord = "show me all trip records";
 	// output hint
 	private static final String searchApplicationByPjNameHint = "please enter the key word of the correspond project's name: ";
 	private static final String searchApplicationByStateHint = "please enter the state: ";
@@ -50,8 +58,17 @@ public class enterTripSystem {
 	private static final String enterApplicationIDHint = "please enter the applicationID: ";
 	private static final String enterRejectReasonHint = "please enter the reject reason: ";
 	private static final String assignDevelopersHint = "please enter the developers' id that you want to assign to: (e.g 2015110002, 201511004)";
+	private static final String assignDevelopersToPjHint = "please enter the developers' id and the project id want to assign to: (e.g developerID, projexctID)";
+	private static final String viewAllTripRecordHint = "please enter the tripID: (*the trip should be finished)";
 	
 	/*Operation string of a developer. */
+	// input request
+	private static final String viewAllUncomfirmedAssignments = "show me all uncomfirmed assignments";
+	private static final String viewAllComfirmedAssignments = "show me all comfirmed assignments";
+	private static final String confirmAssigment = "confirm assignment";
+	private static final String handinRecord = "hand in record";
+	private static final String viewResponsiblePj = "show me the project I responsible for";
+	// output hint
 	
 	public static void main(String[] argv) {
 		welcome();
@@ -87,8 +104,6 @@ public class enterTripSystem {
 		while (scanner.hasNextLine()){
 			keyword = scanner.next();
 			command = keyword + scanner.nextLine();
-//			System.out.println(keyword);
-//			System.out.println(command);
 			switch (keyword){
 				case show:
 					show(managerOp, command);
@@ -102,6 +117,9 @@ public class enterTripSystem {
 				case reject:
 					rejectApplication(managerOp);
 					break;
+				case assign:
+					assignDevelopersToPj(managerOp);
+					break;
 				default:
 					break;
 			}
@@ -110,7 +128,29 @@ public class enterTripSystem {
 	}
 	
 	private static void ViewOfDeveloper(User user) {
-		
+		DeveloperOp developerOp = new DeveloperOp(user.getUserID());
+		String command = "";		
+		while (scanner.hasNextLine()){			
+			command = scanner.nextLine();
+			switch (command){
+				case viewAllComfirmedAssignments:
+					show(managerOp, command);
+					break;
+				case search:
+					search(managerOp, command);
+					break;
+				case approve:
+					approveApplication(managerOp);
+					break;
+				case reject:
+					rejectApplication(managerOp);
+					break;
+				case assign:
+					assignDevelopersToPj(managerOp);
+					break;
+				default:
+					break;
+			}
 	}
 	
 	private static void welcome() {
@@ -139,16 +179,7 @@ public class enterTripSystem {
 		return user;
 	}
 	
-	/* manager operation */
-	private static void viewApplications(List<Application> applications){
-		if (applications.size() == 0 ){
-			printHint(noResult);
-		}
-		for (int i = 0, len = applications.size(); i < len; i++){
-			System.out.println(applications.get(i).toString());
-		}
-	}
-	
+	/* manager operation */	
 	private static void search(ManagerOp managerOp, String command){
 		switch(command){
 			case searchApplicationByPjName:
@@ -170,10 +201,16 @@ public class enterTripSystem {
 	private static void show(ManagerOp managerOp, String command){
 		switch (command){			
 			case viewAllApplicationRequests:
-				System.out.println("1");
 				viewApplications(managerOp.getAllApplication());
 				break;		
-				
+			case viewAllAssignmentState:
+				viewAllAssignmentState(managerOp);
+				break;
+			case viewAllTripState:
+				viewTrip(managerOp.getAllTripState());
+				break;
+			case viewAllTripRecord:
+				viewTripRecord(managerOp);
 			default:
 				break;
 		}
@@ -200,6 +237,57 @@ public class enterTripSystem {
 		printHint(enterRejectReasonHint);
 		String reason = scanner.nextLine();
 		managerOp.giveRefusedReason(applicationID, reason);
+	}
+	
+	private static void viewAllAssignmentState(ManagerOp managerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		Assignment assignment = managerOp.getAssignmentStateByID(applicationID);
+		System.out.println(assignment.toString());
+	}
+	
+	private static void viewTripRecord(ManagerOp managerOp){
+		printHint(viewAllTripRecordHint);
+		int tripID = scanner.nextInt();
+		viewTripRecord(managerOp.getFinishedTripRecord(tripID));
+	}
+
+	private static void assignDevelopersToPj(ManagerOp managerOp){
+		printHint(assignDevelopersToPjHint);
+		String[] info = splitToken(scanner.nextLine(), ", ");
+		managerOp.assignDeveloperToProject(info[1], info[2]);
+		System.out.println("assigned successfully");
+	}
+	
+	private static void viewApplications(List<Application> applications){
+		if (applications.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = applications.size(); i < len; i++){
+			System.out.println(applications.get(i).toString());
+		}
+	}
+	
+	private static void viewTrip(List<Trip> trip){
+		if (trip.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = trip.size(); i < len; i++){
+			System.out.println(trip.get(i).toString());
+		}
+	}
+	
+	private static void viewTripRecord(List<TripRecord> triprecord){
+		if (triprecord.size() == 0 ){
+			printHint(noResult);
+		}
+		for (int i = 0, len = triprecord.size(); i < len; i++){
+			System.out.println(triprecord.get(i).toString());
+		}
+	}
+	
+	private static void viewAssignment(List<Assignment> assignments){
+		
 	}
 	
 	private static void printHint(String hint){

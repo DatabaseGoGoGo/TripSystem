@@ -34,4 +34,17 @@ public class TripRecord {
 	public String getDeveloperID(){
 		return developerID;
 	}
+	
+	@Override
+	public String toString() {
+		String result = "-----------------------------------------------------------\n";
+		result += "trip id: " + tripID + "\n";
+		result += "developer id: " + developerID + "\t";
+		result += "developer name: " + developerName + "\n";
+		result += "actualDepartTime: " + actualDepartTime + "\t";
+		result += "actualTripDays: " + actualTripDays + "\n";
+		result += "tripContent: " + tripContent + "\n";
+		result += "-----------------------------------------------------------";
+		return result;
+	}
 }

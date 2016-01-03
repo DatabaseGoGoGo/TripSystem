@@ -20,9 +20,9 @@ public class Trip {
 	
 	private List<User> developers = new LinkedList<User>();
 	
-	public Trip(int tripID, int applicationID, int state){
+	public Trip(int tripID, int applicationID, String applicationName, int state){
 		this.tripID = tripID;
-		this.tripName = applicationID + "_trip";
+		this.tripName = applicationName + "_trip";
 		this.applicationID = applicationID;
 		this.state = state;
 	}
@@ -71,4 +71,28 @@ public class Trip {
 	public String getDescription() {
 		return description;
 	}	
+	
+	private String getStateName(){
+		switch(state){
+			case UNSTARTED:
+				return "unstarted";
+			case FINISHED:
+				return "finished";
+			case ONGOING:
+				return "ongoing";
+			default:
+				return "";
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String result = "-----------------------------------------------------------\n";
+		result += "trip id: " + tripID + "\t";
+		result += "trip name: " + tripName + "\n";
+		result += "application id: " + applicationID + "\n";
+		result += "state: " + getStateName() + "\n";
+		result += "-----------------------------------------------------------";
+		return result;
+	}
 }

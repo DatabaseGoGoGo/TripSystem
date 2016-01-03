@@ -126,8 +126,8 @@ public class Application {
 			result += "WAITING\n";
 			break;
 		}
-		result += "rejected times: " + rejectTimes;
-		result += "\n-----------------------------------------------------------";
+		result += "rejected times: " + rejectTimes + "\n";
+		result += "-----------------------------------------------------------";
 		return result;		
 	}
 }
