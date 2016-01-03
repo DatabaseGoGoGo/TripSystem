@@ -10,6 +10,13 @@ import bean.User;
 
 
 public class enterTripSystem {
+	/* default values */
+	// application
+	public static final int APPROVED = 0;
+	public static final int REFUSED = 1;
+	public static final int WAITING = 2;
+	public static final int CANCELED = 3;
+	
 	private static Scanner scanner = new Scanner(System.in);
 	/*Exit string. */
 	private static final String EXIT = "exit";
@@ -27,14 +34,22 @@ public class enterTripSystem {
 	// keyword
 	private static final String show = "show";
 	private static final String search = "search";
+	private static final String approve = "approve";
+	private static final String reject = "reject";
 	// input request
 	private static final String viewAllApplicationRequests = "show me all trip requests";
 	private static final String searchApplicationByPjName = "search for trip requests by project name";
 	private static final String searchApplicationByState = "search for trip requests by state";
+	private static final String approveApplication = "approve application";
+	private static final String rejectApplication = "reject application";
+	private static final String viewAllTripState = "show me all trip state";
 	// output hint
 	private static final String searchApplicationByPjNameHint = "please enter the key word of the correspond project's name: ";
 	private static final String searchApplicationByStateHint = "please enter the state: ";
-	private static final String noResult = "No result found!"; 
+	private static final String noResult = "No result found!";
+	private static final String enterApplicationIDHint = "please enter the applicationID: ";
+	private static final String enterRejectReasonHint = "please enter the reject reason: ";
+	private static final String assignDevelopersHint = "please enter the developers' id that you want to assign to: (e.g 2015110002, 201511004)";
 	
 	/*Operation string of a developer. */
 	
@@ -80,6 +95,12 @@ public class enterTripSystem {
 					break;
 				case search:
 					search(managerOp, command);
+					break;
+				case approve:
+					approveApplication(managerOp);
+					break;
+				case reject:
+					rejectApplication(managerOp);
 					break;
 				default:
 					break;
@@ -158,7 +179,35 @@ public class enterTripSystem {
 		}
 	}
 	
+	private static void approveApplication(ManagerOp managerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		managerOp.setApplicationState(applicationID, APPROVED);
+		printHint(assignDevelopersHint);
+		String[] developers = splitToken(scanner.nextLine(), ", ");
+		while(!managerOp.assignDevelopersToTrip(applicationID, developers)){
+			System.out.println("Assigned failed! check if the number of assigned developers exceeds");
+			printHint(assignDevelopersHint);
+			developers = splitToken(scanner.nextLine(), ", ");
+		}
+		System.out.println("Assigned successfully");
+	}
+	
+	private static void rejectApplication(ManagerOp managerOp){
+		printHint(enterApplicationIDHint);
+		int applicationID = scanner.nextInt();
+		managerOp.setApplicationState(applicationID, REFUSED);
+		printHint(enterRejectReasonHint);
+		String reason = scanner.nextLine();
+		managerOp.giveRefusedReason(applicationID, reason);
+	}
+	
 	private static void printHint(String hint){
 		System.out.println(hint);
+	}
+	
+	private static String[] splitToken(String line, String token){
+		String[] arry = line.split(token);
+		return arry;
 	}
 }

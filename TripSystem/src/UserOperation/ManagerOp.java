@@ -243,7 +243,10 @@ public class ManagerOp {
     	return developers;
 	}
 	
-	public void assignDevelopersToTrip(int applicationID, int[] developers){
+	public boolean assignDevelopersToTrip(int applicationID, String[] developers){
+		if (!checkForGroupSize(applicationID, developers.length)){ // assigned num > request num
+			return false;
+		}
 		for (int i = 0; i < developers.length; i++){
 			String sql = "insert ignore into assign(applicationID, userID, state) "
 					+ "values("+ applicationID + ", " + developers[i] + ", " + WAITING + ")";
@@ -256,6 +259,26 @@ public class ManagerOp {
 			}
 		}
 		startTrip(applicationID);
+		return true;
+	}
+	
+	private boolean checkForGroupSize(int applicationID, int size){
+		int groupSize = 0;
+		String sql = "select groupSize from application "
+					+ "where applicationID = " + applicationID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			groupSize = result.getInt("groupSize");    		
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return size < groupSize;
 	}
 	
 	private void startTrip(int applicationID){
@@ -430,9 +453,10 @@ public class ManagerOp {
 //		System.out.println(l.size());
 		
 		// setApplicationState
-//		m.setApplicationState(51438896, 1);
+//		m.setApplicationState(1660004646, 0);
+//		m.assignDevelopersToTrip(1660004646, developers);
 		// giveRefusedReason
-//		m.giveRefusedReason(51438896, "~~~~~~~~~~`");
+//		m.giveRefusedReason(1660004646, "~~~~~~~~~~`");
 		
 		
 		// getAllDeveloperByApplicationID
@@ -442,10 +466,18 @@ public class ManagerOp {
 //		}
 //		System.out.println(l.size());
 		// assignDevelopersToTrip(int, int[])
-//		int[] developers = {2015110003, 2015110001, 2015110019};
-//		m.assignDevelopersToTrip(51438896, developers);
+//		String[] developers = {"2015110003", "2015110001", "2015110006"};
+//		m.assignDevelopersToTrip(1660025553, developers);
 		
-
+//		m.assignDeveloperToProject(2015120008, "2015110003");
+//		m.assignDeveloperToProject(2015120008, "2015110006");
+//		m.assignDeveloperToProject(2015120008, "2015110001");
+//		m.assignDeveloperToProject(2015120008, "2015110002");
+		
+		List<Trip> l = m.getAllTripState();
+		for (int i = 0, len = l.size(); i < len; i++){
+			System.out.println(l.get(i).getState());
+		}
 		
 
 	}
