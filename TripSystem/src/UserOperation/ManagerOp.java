@@ -12,6 +12,7 @@ import java.util.ListIterator;
 
 import bean.Application;
 import bean.Assignment;
+import bean.RejectLog;
 import bean.Trip;
 import bean.TripRecord;
 import bean.User;
@@ -450,6 +451,51 @@ public class ManagerOp {
 		}
 	}
 	
+	public List<RejectLog> getRejectLog(int applicationID){
+		if (!checkForApplicationRejected(applicationID)){
+			return null;
+		}
+		List<RejectLog> rejectLog = new LinkedList<RejectLog>();
+		String sql = "select * from rejectionlog "
+					+ "where applicationID = " + applicationID;
+    	ResultSet result;
+    	DBHelper dbHelper = new DBHelper(url, sql);    	
+    	try {
+    		result = dbHelper.getPst().executeQuery();
+    		while (result.next()){
+    			int rejectID = result.getInt("rejectionID");    			
+    			String rejectReason = result.getString("rejectReason");
+
+    			rejectLog.add(new RejectLog(rejectID, applicationID, rejectReason));
+    		}
+    		result.close();
+    		dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return rejectLog;
+	}
+	
+	private boolean checkForApplicationRejected(int applicationID){
+		String sql = "select state from application "
+				+ "where state = " + REFUSED + " and "
+				+ "applicationID = " + applicationID;
+		int state = -1;
+		ResultSet result;
+		DBHelper dbHelper = new DBHelper(url, sql);    	
+		try {
+			result = dbHelper.getPst().executeQuery();
+			while (result.next()){
+				state = result.getInt("state");
+			}
+			result.close();
+			dbHelper.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return state == REFUSED;
+	}
+
 	public static void main(String[] a){
 		ManagerOp m = new ManagerOp("2015110009");
 		// getAllApplication();

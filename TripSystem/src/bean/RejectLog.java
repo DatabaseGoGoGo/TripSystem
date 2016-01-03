@@ -4,14 +4,21 @@ public class RejectLog {
 	private int rejectionID;
 	private int applicationID;
 	private String rejectReason;
-	private int rejectTimes;
 	
-	public RejectLog(int rejectID, int applicationID, String rejectReason, int rejectTimes) {
+	public RejectLog(int rejectID, int applicationID, String rejectReason) {
 		this.rejectionID = rejectID;
 		this.applicationID = applicationID;
 		this.rejectReason = rejectReason;
-		this.rejectTimes = rejectTimes;
 	}
 	
+	@Override
+	public String toString() {
+		String result = "-----------------------------------------------------------\n";
+		result += "application id: " + applicationID + "\n";
+		result += "reject id: " + rejectionID + "\t";
+		result += "reject reason: " + rejectReason + "\n";
+		result += "-----------------------------------------------------------";
+		return result;		
+	}
 	
 }
